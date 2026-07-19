@@ -1,0 +1,11 @@
+{
+  "type": "header",
+  "name": "Grupo de cabecera",
+  "sections": {
+    "header": {
+      "type": "luxor-header",
+      "settings": {}
+    }
+  },
+  "order": ["header"]
+}

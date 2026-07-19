@@ -1,0 +1,32 @@
+<section class="cta" data-section="cta">
+  <p class="eyebrow eyebrow--center">{{ section.settings.eyebrow }}</p>
+  <h2 class="cta__title">
+    <span class="cta__line"><span>{{ section.settings.title_line_1 }}</span></span>
+    <span class="cta__line"><span><em>{{ section.settings.title_line_2 }}</em></span></span>
+  </h2>
+  <div class="cta__actions">
+    {%- if section.settings.cta_primary_label != blank -%}
+      <a class="btn btn--brass" href="{{ section.settings.cta_primary_link | default: '#configurador' }}">{{ section.settings.cta_primary_label }}</a>
+    {%- endif -%}
+    {%- if section.settings.cta_secondary_label != blank -%}
+      <a class="btn btn--ghost" href="{{ section.settings.cta_secondary_link | default: 'mailto:atelier@luxor.casa' }}">{{ section.settings.cta_secondary_label }}</a>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "CTA final",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 07 · Encargos" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Encarga una pieza que ya existía" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica latón)", "default": "hace cinco mil años." },
+    { "type": "text", "id": "cta_primary_label", "label": "CTA principal — texto", "default": "Configurar la tuya" },
+    { "type": "url", "id": "cta_primary_link", "label": "CTA principal — enlace" },
+    { "type": "text", "id": "cta_secondary_label", "label": "CTA secundaria — texto", "default": "atelier@luxor.casa" },
+    { "type": "url", "id": "cta_secondary_link", "label": "CTA secundaria — enlace" }
+  ],
+  "presets": [{ "name": "CTA final" }]
+}
+{% endschema %}
+{% comment %} El enlace mailto por defecto se resuelve en el markup; url settings no aceptan mailto. {% endcomment %}

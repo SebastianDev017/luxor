@@ -1,0 +1,54 @@
+<header class="nav" data-luxor-header>
+  <a class="nav__brand" href="{{ routes.root_url }}" aria-label="{{ shop.name }} — {{ 'general.accessibility.home' | t }}">
+    <span class="nav__monogram" aria-hidden="true">{% render 'luxor-icon', icon: 'monogram' %}</span>
+    <span class="nav__word">{{ section.settings.brand_text | default: shop.name }}</span>
+  </a>
+  <nav class="nav__links" aria-label="{{ 'general.accessibility.nav' | t }}">
+    {%- if section.settings.menu != blank -%}
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="/#materias">{{ 'sections.header.materials' | t }}</a>
+      <a href="/#coleccion">{{ 'sections.header.collection' | t }}</a>
+      <a href="/#configurador">{{ 'sections.header.configurator' | t }}</a>
+      <a href="/#metodo">{{ 'sections.header.method' | t }}</a>
+      <a href="/#estudio">{{ 'sections.header.studio' | t }}</a>
+    {%- endif -%}
+  </nav>
+  <a class="nav__cta" href="{{ section.settings.cta_link | default: '/#configurador' }}">
+    {%- if section.settings.cta_label != blank -%}{{ section.settings.cta_label }}{%- else -%}{{ 'sections.header.cta' | t }}{%- endif -%}
+  </a>
+</header>
+
+{% schema %}
+{
+  "name": "Cabecera",
+  "class": "luxor-header-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "brand_text",
+      "label": "Texto de marca",
+      "default": "LUXOR"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú",
+      "info": "Sin menú seleccionado se muestran las anclas del home (Materias, Colección, Configurador, Método, Estudio)."
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Etiqueta del botón",
+      "default": "Encargar"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "Enlace del botón"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,61 @@
+<section class="hero" data-section="hero" id="inicio">
+  <figure class="hero__media" aria-hidden="true">
+    {%- if section.settings.image -%}
+      {{ section.settings.image | image_url: width: 1920 | image_tag: sizes: '100vw', widths: '960, 1440, 1920', fetchpriority: 'high', alt: '' }}
+    {%- else -%}
+      <img
+        src="{{ 'hero.webp' | asset_url }}"
+        srcset="{{ 'hero-960.webp' | asset_url }} 960w, {{ 'hero.webp' | asset_url }} 1920w"
+        sizes="100vw"
+        alt=""
+        width="1920"
+        height="1080"
+        fetchpriority="high"
+      >
+    {%- endif -%}
+  </figure>
+  <div class="hero__veil" aria-hidden="true"></div>
+  <div class="hero__content">
+    <p class="hero__eyebrow">
+      <span>{{ section.settings.eyebrow_left }}</span>
+      <span class="hero__rule"></span>
+      <span>{{ section.settings.eyebrow_right }}</span>
+    </p>
+    <h1 class="hero__title">
+      <span class="hero__line"><span>{{ section.settings.title_line_1 }}</span></span>
+      <span class="hero__line hero__line--em"><span>{{ section.settings.title_line_2 }}</span></span>
+    </h1>
+    <p class="hero__sub">{{ section.settings.subtitle }}</p>
+    <div class="hero__actions">
+      {%- if section.settings.cta_primary_label != blank -%}
+        <a class="btn btn--brass" href="{{ section.settings.cta_primary_link | default: '#configurador' }}">{{ section.settings.cta_primary_label }}</a>
+      {%- endif -%}
+      {%- if section.settings.cta_secondary_label != blank -%}
+        <a class="btn btn--ghost" href="{{ section.settings.cta_secondary_link | default: '#coleccion' }}">{{ section.settings.cta_secondary_label }}</a>
+      {%- endif -%}
+    </div>
+  </div>
+  {%- if section.settings.scroll_hint != blank -%}
+    <p class="hero__scrollhint" aria-hidden="true"><span>{{ section.settings.scroll_hint }}</span><span class="hero__scrollbar"><i></i></span></p>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Hero cinematográfico",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen de fondo", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "eyebrow_left", "label": "Eyebrow izquierda", "default": "Casa de Objetos" },
+    { "type": "text", "id": "eyebrow_right", "label": "Eyebrow derecha", "default": "Col. I — Origen" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "La materia" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica latón)", "default": "recuerda." },
+    { "type": "textarea", "id": "subtitle", "label": "Subtítulo", "default": "Travertino, alabastro, latón y cedro. Cinco milenios de memoria, tallados en forma presente." },
+    { "type": "text", "id": "cta_primary_label", "label": "CTA principal — texto", "default": "Configurar la Ánfora N.01" },
+    { "type": "url", "id": "cta_primary_link", "label": "CTA principal — enlace" },
+    { "type": "text", "id": "cta_secondary_label", "label": "CTA secundaria — texto", "default": "Ver la colección" },
+    { "type": "url", "id": "cta_secondary_link", "label": "CTA secundaria — enlace" },
+    { "type": "text", "id": "scroll_hint", "label": "Pista de scroll", "default": "La historia empieza en la cantera" }
+  ],
+  "presets": [{ "name": "Hero cinematográfico" }]
+}
+{% endschema %}

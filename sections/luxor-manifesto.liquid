@@ -1,0 +1,37 @@
+<section class="manifesto" data-section="manifesto" aria-label="{{ 'sections.manifesto.aria' | t }}">
+  <p class="manifesto__index" aria-hidden="true">{{ section.settings.index_label }}</p>
+  <div class="manifesto__lines">
+    {%- for block in section.blocks -%}
+      <p class="manifesto__line" {{ block.shopify_attributes }}>{{ block.settings.text }}</p>
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Manifiesto",
+  "settings": [
+    { "type": "text", "id": "index_label", "label": "Índice de sección", "default": "§ 01" }
+  ],
+  "blocks": [
+    {
+      "type": "line",
+      "name": "Línea",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "LUXOR trabaja cuatro materias con cinco milenios de memoria." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Manifiesto",
+      "blocks": [
+        { "type": "line", "settings": { "text": "LUXOR trabaja cuatro materias con cinco milenios de memoria." } },
+        { "type": "line", "settings": { "text": "Cada pieza nace de oficios heredados: canteros, torneros, fundidores." } },
+        { "type": "line", "settings": { "text": "Objetos numerados, hechos a pedido, pensados para durar más que su dueño." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

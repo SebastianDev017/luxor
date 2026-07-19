@@ -1,0 +1,109 @@
+<section class="lookbook" data-section="lookbook" id="coleccion">
+  <header class="section-head section-head--split">
+    <div>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="section-title">{{ section.settings.title_line_1 }}<br><em>{{ section.settings.title_line_2 }}</em></h2>
+    </div>
+    <p class="section-note">{{ section.settings.note }}</p>
+  </header>
+  <div class="lookbook__grid">
+    {%- liquid
+      assign slots = 'anfora,estela,canopo,obelisco,dintel,monolito' | split: ','
+    -%}
+    {%- if section.settings.collection != blank -%}
+      {%- for product in section.settings.collection.products limit: 6 -%}
+        {%- assign slot = slots[forloop.index0] -%}
+        <a class="piece piece--{{ slot }}" href="{{ product.url }}" aria-label="{{ product.title | escape }} — {{ product.price | money }}">
+          <span class="piece__media">
+            {%- if product.featured_image -%}
+              {{ product.featured_image | image_url: width: 960 | image_tag: loading: 'lazy', alt: product.featured_image.alt | default: product.title }}
+            {%- endif -%}
+          </span>
+          <span class="piece__veil" aria-hidden="true"></span>
+          <span class="piece__body">
+            <span class="piece__num">N.{{ forloop.index | prepend: '0' | slice: -2, 2 }}{% if product.type != blank %} · {{ product.type }}{% endif %}</span>
+            <span class="piece__title">{{ product.title }}</span>
+            <span class="piece__meta">{{ 'sections.lookbook.from_price' | t }} {{ product.price_min | money }}</span>
+          </span>
+          <span class="piece__frame" aria-hidden="true"></span>
+        </a>
+      {%- endfor -%}
+    {%- else -%}
+      {%- for block in section.blocks -%}
+        {%- assign slot = block.settings.slot -%}
+        <a class="piece piece--{{ slot }}" href="{{ block.settings.link | default: '#configurador' }}" aria-label="{{ block.settings.title | escape }} {{ block.settings.num }} — {{ block.settings.type }} en {{ block.settings.material }}, {{ block.settings.price }}" {{ block.shopify_attributes }}>
+          <span class="piece__media">
+            {%- if block.settings.image -%}
+              {{ block.settings.image | image_url: width: 960 | image_tag: loading: 'lazy', alt: block.settings.title }}
+            {%- else -%}
+              <img src="{{ 'piece-' | append: slot | append: '.webp' | asset_url }}" alt="{{ block.settings.title }}, {{ block.settings.type | downcase }}" loading="lazy" width="640" height="1080">
+            {%- endif -%}
+          </span>
+          <span class="piece__veil" aria-hidden="true"></span>
+          <span class="piece__body">
+            <span class="piece__num">{{ block.settings.num }} · {{ block.settings.material }}</span>
+            <span class="piece__title">{{ block.settings.title }}</span>
+            <span class="piece__meta">{{ block.settings.type }}<br>{{ block.settings.price }}</span>
+          </span>
+          <span class="piece__frame" aria-hidden="true"></span>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 03 · Colección I — Origen" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Seis piezas" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "numeradas." },
+    { "type": "textarea", "id": "note", "label": "Nota lateral", "default": "Cada pieza se produce a pedido y lleva su número tallado en la base. Ninguna serie supera las cuarenta y nueve unidades." },
+    { "type": "collection", "id": "collection", "label": "Colección (opcional)", "info": "Con colección seleccionada se muestran sus 6 primeros productos en vez de los bloques." }
+  ],
+  "blocks": [
+    {
+      "type": "piece",
+      "name": "Pieza",
+      "settings": [
+        {
+          "type": "select",
+          "id": "slot",
+          "label": "Hueco del grid editorial",
+          "options": [
+            { "value": "anfora", "label": "1 — Alta grande (izquierda)" },
+            { "value": "estela", "label": "2 — Ancha (derecha arriba)" },
+            { "value": "canopo", "label": "3 — Base (centro)" },
+            { "value": "obelisco", "label": "4 — Base (derecha)" },
+            { "value": "dintel", "label": "5 — Ancha (izquierda abajo)" },
+            { "value": "monolito", "label": "6 — Alta desplazada (derecha abajo)" }
+          ],
+          "default": "anfora"
+        },
+        { "type": "image_picker", "id": "image", "label": "Imagen", "info": "Sin imagen se usa la fotografía LUXOR del hueco elegido." },
+        { "type": "text", "id": "num", "label": "Numeración", "default": "N.01" },
+        { "type": "text", "id": "title", "label": "Título", "default": "Ánfora" },
+        { "type": "text", "id": "type", "label": "Tipo", "default": "Lámpara escultórica" },
+        { "type": "text", "id": "material", "label": "Material", "default": "Alabastro" },
+        { "type": "text", "id": "price", "label": "Precio (texto)", "default": "desde 1.400 €" },
+        { "type": "url", "id": "link", "label": "Enlace" }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Lookbook",
+      "blocks": [
+        { "type": "piece", "settings": { "slot": "anfora", "num": "N.01", "title": "Ánfora", "type": "Lámpara escultórica", "material": "Alabastro", "price": "desde 1.400 €" } },
+        { "type": "piece", "settings": { "slot": "estela", "num": "N.02", "title": "Estela", "type": "Consola de pared", "material": "Travertino", "price": "desde 3.200 €" } },
+        { "type": "piece", "settings": { "slot": "canopo", "num": "N.03", "title": "Canopo", "type": "Vaso contenedor", "material": "Alabastro", "price": "desde 980 €" } },
+        { "type": "piece", "settings": { "slot": "obelisco", "num": "N.04", "title": "Obelisco", "type": "Candelabro", "material": "Latón", "price": "desde 640 €" } },
+        { "type": "piece", "settings": { "slot": "dintel", "num": "N.05", "title": "Dintel", "type": "Centro de mesa", "material": "Travertino", "price": "desde 1.150 €" } },
+        { "type": "piece", "settings": { "slot": "monolito", "num": "N.06", "title": "Monolito", "type": "Objeto de escritorio", "material": "Cedro", "price": "desde 420 €" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

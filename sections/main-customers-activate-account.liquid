@@ -1,0 +1,50 @@
+<style>
+  .apw-sub {
+    color: var(--text-muted);
+    max-width: 28rem;
+    margin: -1rem 0 2rem;
+  }
+  .apw-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 0.4rem;
+  }
+</style>
+
+<div class="page-shell page-shell--narrow">
+  <p class="eyebrow">{{ shop.name }} — {{ 'general.brand.byline' | t }}</p>
+  {%- assign title_words = 'customer.activate_account.title' | t | split: ' ' -%}
+  <h1 class="page-title">
+    {%- for word in title_words -%}
+      {%- unless forloop.first %} {% endunless -%}
+      {%- if forloop.last and forloop.length > 1 -%}<em>{{ word }}</em>{%- else -%}{{ word }}{%- endif -%}
+    {%- endfor -%}
+  </h1>
+  <p class="apw-sub">{{ 'customer.activate_account.subtext' | t }}</p>
+
+  {%- form 'activate_customer_password' -%}
+    {%- if form.errors -%}
+      <div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>
+    {%- endif -%}
+    <div class="field">
+      <label for="ActivatePassword">{{ 'customer.activate_account.password' | t }}</label>
+      <input type="password" id="ActivatePassword" name="customer[password]" autocomplete="new-password" required>
+    </div>
+    <div class="field">
+      <label for="ActivatePasswordConfirm">{{ 'customer.activate_account.password_confirm' | t }}</label>
+      <input type="password" id="ActivatePasswordConfirm" name="customer[password_confirmation]" autocomplete="new-password" required>
+    </div>
+    <div class="apw-actions">
+      <button class="btn btn--brass" type="submit">{{ 'customer.activate_account.submit' | t }}</button>
+      <button class="btn btn--ghost" type="submit" name="decline">{{ 'customer.activate_account.cancel' | t }}</button>
+    </div>
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Clientes — activar cuenta",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,81 @@
+<section class="process" data-section="process" id="metodo">
+  <div class="process__media">
+    <figure class="process__figure">
+      {%- if section.settings.image -%}
+        {{ section.settings.image | image_url: width: 1536 | image_tag: loading: 'lazy', alt: section.settings.image.alt | default: section.settings.caption }}
+      {%- else -%}
+        <img src="{{ 'atelier.webp' | asset_url }}" alt="{{ 'sections.process.image_alt' | t }}" loading="lazy" width="1536" height="1024">
+      {%- endif -%}
+      {%- if section.settings.caption != blank -%}
+        <figcaption class="process__caption">{{ section.settings.caption }}</figcaption>
+      {%- endif -%}
+    </figure>
+  </div>
+  <div class="process__steps">
+    <header class="section-head">
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="section-title">{{ section.settings.title_line_1 }}<br><em>{{ section.settings.title_line_2 }}</em></h2>
+    </header>
+    <ol class="process__list">
+      {%- for block in section.blocks -%}
+        <li class="process__step" {{ block.shopify_attributes }}>
+          <span class="process__icon">{% render 'luxor-icon', icon: block.settings.icon %}</span>
+          <span class="process__num">{{ forloop.index | prepend: '00' | slice: -2, 2 }}</span>
+          <div>
+            <h3>{{ block.settings.title }}</h3>
+            <p>{{ block.settings.text }}</p>
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Método",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen del atelier", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "caption", "label": "Pie de imagen", "default": "Atelier LUXOR, Barcelona. Torneado en húmedo de alabastro de Volterra." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 05 · Método" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Del estrato" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "a la firma." }
+  ],
+  "blocks": [
+    {
+      "type": "step",
+      "name": "Paso",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "proc-cantera", "label": "Cantera" },
+            { "value": "proc-torno", "label": "Torno" },
+            { "value": "proc-pulido", "label": "Pulido" },
+            { "value": "proc-ensamblaje", "label": "Ensamblaje" },
+            { "value": "proc-numerado", "label": "Numerado" }
+          ],
+          "default": "proc-cantera"
+        },
+        { "type": "text", "id": "title", "label": "Título", "default": "Extracción" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "El bloque se elige a pie de cantera, leyendo la veta antes de cortar." }
+      ]
+    }
+  ],
+  "max_blocks": 6,
+  "presets": [
+    {
+      "name": "Método",
+      "blocks": [
+        { "type": "step", "settings": { "icon": "proc-cantera", "title": "Extracción", "text": "El bloque se elige a pie de cantera, leyendo la veta antes de cortar." } },
+        { "type": "step", "settings": { "icon": "proc-torno", "title": "Torneado", "text": "La forma nace en el torno, en húmedo, sin moldes ni copias." } },
+        { "type": "step", "settings": { "icon": "proc-pulido", "title": "Pulido", "text": "Al agua y a mano, hasta que la materia decide su brillo justo." } },
+        { "type": "step", "settings": { "icon": "proc-ensamblaje", "title": "Ensamblaje", "text": "Latón torneado, cableado textil y cedro aceitado, unidos sin adhesivos vistos." } },
+        { "type": "step", "settings": { "icon": "proc-numerado", "title": "Numerado", "text": "Cada pieza se talla con su número de serie y entra en el registro de la casa." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

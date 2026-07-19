@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    {{- page_title -}}
+    {%- if current_tags %} &ndash; {{ 'general.meta.tags' | t: tags: current_tags | join: ', ' }}{% endif -%}
+    {%- if current_page != 1 %} &ndash; {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+    {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+  </title>
+  {%- if page_description -%}
+    <meta name="description" content="{{ page_description | escape }}">
+  {%- endif -%}
+  <link rel="icon" type="image/svg+xml" href="{{ 'luxor-favicon.svg' | asset_url }}">
+  <link rel="canonical" href="{{ canonical_url }}">
+
+  {%- liquid
+    assign body_font = 'roboto-latin-400-normal.woff2' | asset_url
+    assign body_font_500 = 'roboto-latin-500-normal.woff2' | asset_url
+    assign display_font = 'jost-latin-wght-normal.woff2' | asset_url
+    assign display_font_italic = 'jost-latin-wght-italic.woff2' | asset_url
+    assign mono_font = 'ibm-plex-mono-latin-400-normal.woff2' | asset_url
+    assign mono_font_500 = 'ibm-plex-mono-latin-500-normal.woff2' | asset_url
+  -%}
+  {{ display_font | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+  {{ body_font | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+  {{ mono_font | preload_tag: as: 'font', type: 'font/woff2', crossorigin: 'anonymous' }}
+
+  <style>
+    @font-face {
+      font-family: 'Jost Variable';
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url('{{ display_font }}') format('woff2-variations');
+    }
+    @font-face {
+      font-family: 'Jost Variable';
+      font-style: italic;
+      font-weight: 100 900;
+      font-display: swap;
+      src: url('{{ display_font_italic }}') format('woff2-variations');
+    }
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('{{ body_font }}') format('woff2');
+    }
+    @font-face {
+      font-family: 'Roboto';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('{{ body_font_500 }}') format('woff2');
+    }
+    @font-face {
+      font-family: 'IBM Plex Mono';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('{{ mono_font }}') format('woff2');
+    }
+    @font-face {
+      font-family: 'IBM Plex Mono';
+      font-style: normal;
+      font-weight: 500;
+      font-display: swap;
+      src: url('{{ mono_font_500 }}') format('woff2');
+    }
+    :root {
+      --bone: {{ settings.color_bone | default: '#ede5d6' }};
+      --bone-deep: {{ settings.color_bone_deep | default: '#e3d8c4' }};
+      --stone: {{ settings.color_stone | default: '#c9b99f' }};
+      --ink: {{ settings.color_ink | default: '#191410' }};
+      --umber: {{ settings.color_umber | default: '#241c14' }};
+      --brass: {{ settings.color_brass | default: '#a97f45' }};
+      --brass-bright: {{ settings.color_brass_bright | default: '#c89e63' }};
+      --brass-dark: {{ settings.color_brass_dark | default: '#7c5a2e' }};
+    }
+  </style>
+
+  {{ 'luxor.css' | asset_url | stylesheet_tag }}
+
+  <script src="{{ 'gsap.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
+  <script src="{{ 'luxor-motion.js' | asset_url }}" defer></script>
+
+  {{ content_for_header }}
+</head>
+<body class="template-{{ request.page_type | handle }}">
+  <a class="skip" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+  {%- unless request.design_mode -%}
+    <div class="preloader" aria-hidden="true">
+      <div class="preloader__mark">{% render 'luxor-icon', icon: 'monogram' %}</div>
+      <p class="preloader__line">{{ shop.name }} — {{ 'general.brand.byline' | t }}</p>
+    </div>
+  {%- endunless -%}
+  <noscript><style>.preloader { display: none; }</style></noscript>
+
+  {% sections 'header-group' %}
+
+  <main id="MainContent" role="main">
+    {{ content_for_layout }}
+  </main>
+
+  {% sections 'footer-group' %}
+</body>
+</html>

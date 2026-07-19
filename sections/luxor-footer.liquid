@@ -1,0 +1,59 @@
+<footer class="footer">
+  {%- if section.settings.show_wordmark -%}
+    <p class="footer__wordmark" aria-hidden="true">{{ section.settings.wordmark | default: shop.name }}</p>
+  {%- endif -%}
+  <div class="footer__brand">
+    <span class="footer__monogram" aria-hidden="true">{% render 'luxor-icon', icon: 'monogram' %}</span>
+    <div>{{ section.settings.brand_lines }}</div>
+  </div>
+  <nav class="footer__nav" aria-label="{{ 'general.accessibility.footer_nav' | t }}">
+    {%- if section.settings.menu != blank -%}
+      {%- for link in section.settings.menu.links -%}
+        <a href="{{ link.url }}">{{ link.title }}</a>
+      {%- endfor -%}
+    {%- else -%}
+      <a href="/#materias">{{ 'sections.header.materials' | t }}</a>
+      <a href="/#coleccion">{{ 'sections.header.collection' | t }}</a>
+      <a href="/#configurador">{{ 'sections.header.configurator' | t }}</a>
+      <a href="/#metodo">{{ 'sections.header.method' | t }}</a>
+    {%- endif -%}
+  </nav>
+  <div class="footer__legal">{{ section.settings.legal }}</div>
+</footer>
+
+{% schema %}
+{
+  "name": "Pie de página",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_wordmark",
+      "label": "Mostrar wordmark embossed",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "wordmark",
+      "label": "Wordmark",
+      "default": "LUXOR"
+    },
+    {
+      "type": "richtext",
+      "id": "brand_lines",
+      "label": "Marca y ubicación",
+      "default": "<p>LUXOR — Casa de Objetos<br>Poblenou, Barcelona</p>"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menú del pie"
+    },
+    {
+      "type": "richtext",
+      "id": "legal",
+      "label": "Línea legal",
+      "default": "<p>MMXXVI · Piezas numeradas, hechas a pedido.<br>La materia recuerda.</p>"
+    }
+  ]
+}
+{% endschema %}

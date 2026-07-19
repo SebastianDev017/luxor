@@ -1,0 +1,179 @@
+<style>
+  .ord-back {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.2rem;
+    margin-bottom: 2rem;
+    transition: border-color 0.3s var(--ease-lux);
+  }
+  .ord-back:hover { border-bottom-color: currentColor; }
+  .ord-date {
+    color: var(--text-muted);
+    margin: -1.5rem 0 2.5rem;
+  }
+  .ord-tablewrap {
+    overflow-x: auto;
+    margin-bottom: clamp(2.5rem, 6vh, 4rem);
+  }
+  .ord-tablewrap .luxor-table { min-width: 44rem; }
+  .ord-variant {
+    display: block;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .ord-totals td {
+    border-bottom: 0;
+    padding: 0.55rem 0.75rem;
+  }
+  .ord-totals tr:first-child td { padding-top: 1.4rem; }
+  .ord-totals .ord-label {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    text-align: right;
+  }
+  .ord-totals .ord-grand td {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    padding-top: 1.1rem;
+  }
+  .ord-totals .ord-grand .ord-value {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+  }
+  .ord-addr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: clamp(1.5rem, 3vw, 3rem);
+  }
+  .ord-addr > div {
+    border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding: clamp(1.4rem, 3vw, 2rem);
+  }
+  .ord-addr h2 {
+    font-size: 1.35rem;
+    font-weight: 440;
+    margin-bottom: 0.6rem;
+  }
+  .ord-status {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    margin-bottom: 1rem;
+  }
+  .ord-addr p { font-size: 0.92rem; }
+  @media (max-width: 720px) {
+    .ord-addr { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="page-shell">
+  <a class="ord-back" href="{{ routes.account_url }}">{{ 'customer.account.return' | t }}</a>
+  <h1 class="page-title">{{ 'customer.order.title' | t: name: order.name }}</h1>
+
+  {%- assign order_date = order.created_at | date: '%d/%m/%Y' -%}
+  <p class="ord-date">{{ 'customer.order.date_html' | t: date: order_date }}</p>
+
+  {%- if order.cancelled -%}
+    {%- assign cancelled_date = order.cancelled_at | date: '%d/%m/%Y' -%}
+    <div class="form-status" role="status">
+      {{ 'customer.order.cancelled_html' | t: date: cancelled_date }}<br>
+      {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason_label }}
+    </div>
+  {%- endif -%}
+
+  <div class="ord-tablewrap">
+    <table class="luxor-table">
+      <thead>
+        <tr>
+          <th scope="col">{{ 'customer.order.product' | t }}</th>
+          <th scope="col">{{ 'customer.order.sku' | t }}</th>
+          <th scope="col">{{ 'customer.order.price' | t }}</th>
+          <th scope="col">{{ 'customer.order.quantity' | t }}</th>
+          <th scope="col">{{ 'customer.order.total' | t }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for line in order.line_items -%}
+          <tr>
+            <td>
+              {%- if line.url != blank -%}
+                <a href="{{ line.url }}">{{ line.title }}</a>
+              {%- else -%}
+                {{ line.title }}
+              {%- endif -%}
+              {%- if line.variant.title != blank and line.variant.title != 'Default Title' -%}
+                <span class="ord-variant">{{ line.variant.title }}</span>
+              {%- endif -%}
+            </td>
+            <td>{{ line.sku }}</td>
+            <td>{{ line.final_price | money }}</td>
+            <td>{{ line.quantity }}</td>
+            <td>{{ line.final_line_price | money }}</td>
+          </tr>
+        {%- endfor -%}
+      </tbody>
+      <tfoot class="ord-totals">
+        <tr>
+          <td class="ord-label" colspan="4">{{ 'customer.order.subtotal' | t }}</td>
+          <td class="ord-value">{{ order.line_items_subtotal_price | money }}</td>
+        </tr>
+        {%- if order.total_discounts > 0 -%}
+          <tr>
+            <td class="ord-label" colspan="4">{{ 'customer.order.discount' | t }}</td>
+            <td class="ord-value">−{{ order.total_discounts | money }}</td>
+          </tr>
+        {%- endif -%}
+        {%- for shipping_method in order.shipping_methods -%}
+          <tr>
+            <td class="ord-label" colspan="4">{{ 'customer.order.shipping' | t }} · {{ shipping_method.title }}</td>
+            <td class="ord-value">{{ shipping_method.price | money }}</td>
+          </tr>
+        {%- endfor -%}
+        {%- for tax_line in order.tax_lines -%}
+          {%- assign tax_rate = tax_line.rate | times: 100 -%}
+          <tr>
+            <td class="ord-label" colspan="4">{{ 'customer.order.tax' | t }} · {{ tax_line.title }} {{ tax_rate }}%</td>
+            <td class="ord-value">{{ tax_line.price | money }}</td>
+          </tr>
+        {%- endfor -%}
+        <tr class="ord-grand">
+          <td class="ord-label" colspan="4">{{ 'customer.order.total' | t }}</td>
+          <td class="ord-value">{{ order.total_price | money }}</td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <div class="ord-addr">
+    <div>
+      <h2>{{ 'customer.order.billing_address' | t }}</h2>
+      <p class="ord-status">{{ 'customer.order.payment_status' | t }} · {{ order.financial_status_label }}</p>
+      {%- if order.billing_address -%}
+        {{ order.billing_address | format_address }}
+      {%- endif -%}
+    </div>
+    <div>
+      <h2>{{ 'customer.order.shipping_address' | t }}</h2>
+      <p class="ord-status">{{ 'customer.order.fulfillment_status' | t }} · {{ order.fulfillment_status_label }}</p>
+      {%- if order.shipping_address -%}
+        {{ order.shipping_address | format_address }}
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Clientes — encargo",
+  "settings": []
+}
+{% endschema %}

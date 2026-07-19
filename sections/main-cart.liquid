@@ -1,0 +1,270 @@
+<style>
+  .cart-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin: calc(-1 * clamp(1.2rem, 3vh, 2.2rem)) 0 clamp(2rem, 5vh, 3rem);
+  }
+  .cart-table .cart-cell--media { width: 7.5rem; }
+  .cart-table th:last-child,
+  .cart-table .cart-cell--price { text-align: right; }
+  .cart-media {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    background: var(--bone-deep);
+    display: block;
+  }
+  .cart-item__title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 450;
+    line-height: 1.2;
+  }
+  .cart-item__title a { transition: color 0.3s; }
+  .cart-item__title a:hover { color: var(--brass-dark); }
+  .cart-item__options {
+    list-style: none;
+    display: grid;
+    gap: 0.15rem;
+    margin-top: 0.4rem;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .cart-remove {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    border-bottom: 1px solid currentColor;
+    padding-bottom: 0.1rem;
+    transition: color 0.3s;
+  }
+  .cart-remove:hover { color: var(--ink); }
+  .cart-qty {
+    width: 4.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+    border-radius: 0;
+    padding: 0.55rem 0.4rem;
+    text-align: center;
+  }
+  .cart-qty:focus-visible { outline: 2px solid var(--brass-dark); outline-offset: 2px; }
+  .cart-price { white-space: nowrap; }
+  .cart-price s {
+    display: block;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+  .cart-foot {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(17rem, 1fr);
+    gap: clamp(2rem, 5vw, 5rem);
+    align-items: start;
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+  }
+  .cart-note textarea { resize: vertical; min-height: 7rem; }
+  .cart-summary {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 20%, transparent);
+    padding-top: 1.4rem;
+    display: grid;
+    gap: 1.1rem;
+  }
+  .cart-summary__row {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 1rem;
+  }
+  .cart-summary__label {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .cart-summary__total {
+    font-family: var(--font-display);
+    font-size: clamp(1.8rem, 3vw, 2.4rem);
+    font-weight: 400;
+  }
+  .cart-summary__fine {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .cart-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+  }
+  .cart-actions .btn {
+    appearance: none;
+    cursor: pointer;
+  }
+  .cart-empty {
+    display: grid;
+    gap: 1.8rem;
+    justify-items: start;
+  }
+  .cart-empty p {
+    color: var(--text-muted);
+    max-width: 28rem;
+  }
+  @media (max-width: 720px) {
+    .cart-table thead { display: none; }
+    .cart-table,
+    .cart-table tbody { display: block; }
+    .cart-table tr {
+      display: grid;
+      grid-template-columns: 96px minmax(0, 1fr);
+      grid-template-areas:
+        'media body'
+        'media qty'
+        'media price';
+      gap: 0.5rem 1.1rem;
+      align-content: start;
+      padding: 1.2rem 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    }
+    .cart-table td {
+      display: block;
+      border: 0;
+      padding: 0;
+    }
+    .cart-cell--media { grid-area: media; width: auto; }
+    .cart-cell--body { grid-area: body; }
+    .cart-cell--qty { grid-area: qty; }
+    .cart-table .cart-cell--price { grid-area: price; text-align: left; }
+    .cart-foot { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="page-shell">
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+  {%- endif -%}
+  <h1 class="page-title">{{ 'sections.cart.title' | t }}</h1>
+
+  {%- if cart.item_count > 0 -%}
+    <p class="cart-count">{{ 'sections.collection_template.products_count' | t: count: cart.item_count }}</p>
+
+    <form action="{{ routes.cart_url }}" method="post" class="cart-form">
+      <table class="luxor-table cart-table">
+        <thead>
+          <tr>
+            <th scope="col" class="cart-cell--media"><span class="sr-only">{{ 'customer.order.product' | t }}</span></th>
+            <th scope="col">{{ 'customer.order.product' | t }}</th>
+            <th scope="col">{{ 'sections.cart.quantity' | t }}</th>
+            <th scope="col">{{ 'customer.order.total' | t }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {%- for item in cart.items -%}
+            <tr>
+              <td class="cart-cell--media">
+                {%- if item.image -%}
+                  {%- assign item_alt = item.title | escape -%}
+                  <a href="{{ item.url }}" tabindex="-1" aria-hidden="true">
+                    {{ item.image | image_url: width: 192 | image_tag: loading: 'lazy', class: 'cart-media', alt: item_alt }}
+                  </a>
+                {%- else -%}
+                  <span class="cart-media" aria-hidden="true"></span>
+                {%- endif -%}
+              </td>
+              <td class="cart-cell--body">
+                <p class="cart-item__title"><a href="{{ item.url }}">{{ item.product.title | escape }}</a></p>
+                {%- unless item.product.has_only_default_variant -%}
+                  <ul class="cart-item__options">
+                    {%- for option in item.options_with_values -%}
+                      <li>{{ option.name | escape }} — {{ option.value | escape }}</li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endunless -%}
+                <a class="cart-remove" href="{{ item.url_to_remove }}">{{ 'sections.cart.remove' | t }}</a>
+              </td>
+              <td class="cart-cell--qty">
+                <label class="sr-only" for="cart-qty-{{ forloop.index }}">{{ 'sections.cart.quantity' | t }}: {{ item.product.title | escape }}</label>
+                <input
+                  class="cart-qty"
+                  type="number"
+                  id="cart-qty-{{ forloop.index }}"
+                  name="updates[]"
+                  value="{{ item.quantity }}"
+                  min="0"
+                  inputmode="numeric"
+                >
+              </td>
+              <td class="cart-cell--price">
+                <span class="cart-price">
+                  {%- if item.original_line_price != item.final_line_price -%}
+                    <s>{{ item.original_line_price | money }}</s>
+                  {%- endif -%}
+                  {{ item.final_line_price | money }}
+                </span>
+              </td>
+            </tr>
+          {%- endfor -%}
+        </tbody>
+      </table>
+
+      <div class="cart-foot">
+        {%- if section.settings.show_note -%}
+          <div class="field cart-note">
+            <label for="cart-note">{{ 'sections.cart.note_label' | t }}</label>
+            <textarea id="cart-note" name="note" rows="4">{{ cart.note | escape }}</textarea>
+          </div>
+        {%- else -%}
+          <div></div>
+        {%- endif -%}
+
+        <div class="cart-summary">
+          <div class="cart-summary__row">
+            <span class="cart-summary__label">{{ 'sections.cart.subtotal' | t }}</span>
+            <span class="cart-summary__total">{{ cart.total_price | money }}</span>
+          </div>
+          <p class="cart-summary__fine">{{ 'sections.cart.taxes_shipping' | t }}</p>
+          <div class="cart-actions">
+            <button type="submit" name="update" class="btn btn--ghost">{{ 'sections.cart.update' | t }}</button>
+            <button type="submit" name="checkout" class="btn btn--brass">{{ 'sections.cart.checkout' | t }}</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  {%- else -%}
+    <div class="cart-empty">
+      <p>{{ 'sections.cart.empty' | t }}</p>
+      <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}">{{ 'sections.cart.continue' | t }}</a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Cesta principal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Encargos"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_note",
+      "label": "Mostrar nota para el atelier",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

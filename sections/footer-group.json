@@ -1,0 +1,11 @@
+{
+  "type": "footer",
+  "name": "Grupo de pie",
+  "sections": {
+    "footer": {
+      "type": "luxor-footer",
+      "settings": {}
+    }
+  },
+  "order": ["footer"]
+}

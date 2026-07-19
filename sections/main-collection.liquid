@@ -1,0 +1,223 @@
+<style>
+  .coll-head .page-title {
+    margin-bottom: clamp(1.25rem, 3vh, 2rem);
+  }
+  .coll-desc {
+    max-width: 42rem;
+    color: var(--text-muted);
+  }
+  .coll-desc p + p { margin-top: 0.8em; }
+  .coll-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1rem 2rem;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding: 0.9rem 0;
+    margin: clamp(2rem, 5vh, 3rem) 0 clamp(2.5rem, 6vh, 4rem);
+  }
+  .coll-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .coll-sort {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+  .coll-sort label {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .coll-sort select {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text);
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+    border-radius: 0;
+    padding: 0.55rem 0.75rem;
+    cursor: pointer;
+  }
+  .coll-sort__apply {
+    appearance: none;
+    background: none;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--text);
+    border: 1px solid color-mix(in srgb, var(--ink) 25%, transparent);
+    padding: 0.55rem 0.9rem;
+    cursor: pointer;
+  }
+  .coll-grid {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(2.5rem, 5vh, 4rem) clamp(1rem, 2.5vw, 2rem);
+  }
+  .coll-empty {
+    display: grid;
+    justify-items: start;
+    gap: 1.75rem;
+    padding: clamp(3rem, 8vh, 5rem) 0;
+  }
+  .coll-empty p {
+    color: var(--text-muted);
+    max-width: 28rem;
+  }
+  .coll-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: clamp(3rem, 8vh, 5rem);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .coll-page {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    min-width: 2.6rem;
+    min-height: 2.6rem;
+    padding: 0 0.7rem;
+    border: 1px solid transparent;
+    color: var(--text-muted);
+    transition: color 0.3s, border-color 0.3s;
+  }
+  a.coll-page:hover {
+    color: var(--text);
+    border-color: color-mix(in srgb, var(--ink) 30%, transparent);
+  }
+  .coll-page.is-current {
+    border-color: var(--brass-dark);
+    color: var(--brass-dark);
+  }
+  @media (max-width: 960px) {
+    .coll-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 560px) {
+    .coll-grid { grid-template-columns: 1fr; }
+    .coll-toolbar { align-items: flex-start; }
+  }
+</style>
+
+<div class="page-shell">
+  <header class="coll-head">
+    <p class="eyebrow">§ · {{ 'sections.header.collection' | t }}</p>
+    {%- assign coll_title = collection.title | escape -%}
+    {%- assign title_words = coll_title | split: ' ' -%}
+    {%- capture title_html -%}
+      {%- for word in title_words -%}
+        {%- if forloop.last and title_words.size > 1 -%}<em>{{ word }}</em>{%- else -%}{{ word }}{%- endif -%}
+        {%- unless forloop.last %} {% endunless -%}
+      {%- endfor -%}
+    {%- endcapture -%}
+    <h1 class="page-title">{{ title_html }}</h1>
+    {%- if section.settings.show_description and collection.description != blank -%}
+      <div class="coll-desc">{{ collection.description }}</div>
+    {%- endif -%}
+  </header>
+
+  {%- if collection.products.size == 0 -%}
+    <div class="coll-empty">
+      <p>{{ 'sections.collection_template.empty' | t }}</p>
+      <a class="btn btn--ghost" href="{{ routes.root_url }}"><span>{{ 'sections.page_404.back_home' | t }}</span></a>
+    </div>
+  {%- else -%}
+    <div class="coll-toolbar">
+      <p class="coll-count">{{ 'sections.collection_template.products_count' | t: count: collection.products_count }}</p>
+      {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+      <form class="coll-sort" method="get" action="{{ collection.url }}">
+        <label for="CollSortBy">{{ 'sections.collection_template.sort' | t }}</label>
+        <select id="CollSortBy" name="sort_by">
+          {%- for option in collection.sort_options -%}
+            <option value="{{ option.value | escape }}"{% if option.value == current_sort %} selected{% endif %}>{{ option.name | escape }}</option>
+          {%- endfor -%}
+        </select>
+        <noscript><button type="submit" class="coll-sort__apply">{{ 'sections.collection_template.sort' | t }}</button></noscript>
+      </form>
+    </div>
+
+    {% paginate collection.products by section.settings.products_per_page %}
+      <ul class="coll-grid" role="list">
+        {%- for product in collection.products -%}
+          {%- assign piece_num = paginate.current_offset | plus: forloop.index -%}
+          <li>{% render 'product-card', product: product, num: piece_num %}</li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="coll-pagination" aria-label="{{ 'general.meta.page' | t: page: paginate.current_page }}">
+          {%- if paginate.previous -%}
+            <a class="coll-page" href="{{ paginate.previous.url }}"><span aria-hidden="true">&larr;</span> {{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a class="coll-page" href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="coll-page is-current" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="coll-page">{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a class="coll-page" href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }} <span aria-hidden="true">&rarr;</span></a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {% endpaginate %}
+  {%- endif -%}
+</div>
+
+<script>
+  if (!window.__collSortBound) {
+    window.__collSortBound = true;
+    document.addEventListener('change', function (e) {
+      if (e.target && e.target.id === 'CollSortBy' && e.target.form) {
+        e.target.form.submit();
+      }
+    });
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Colección",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Piezas por página",
+      "min": 8,
+      "max": 24,
+      "step": 2,
+      "default": 12
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Mostrar descripción de la colección",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

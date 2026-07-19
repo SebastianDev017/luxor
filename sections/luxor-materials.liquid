@@ -1,0 +1,105 @@
+<section class="materials" data-section="materials" id="materias">
+  <header class="section-head">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="section-title">{{ section.settings.title_line_1 }}<br><em>{{ section.settings.title_line_2 }}</em></h2>
+  </header>
+  <div class="materials__layout">
+    <div class="materials__map" data-map>
+      {% render 'map-heritage' %}
+    </div>
+    <aside class="materials__panel" data-material-panel id="panel-materias" role="tabpanel" aria-live="polite">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign key = block.settings.map_node
+          assign tex_asset = 'tex-' | append: key | append: '-sm.webp'
+        -%}
+        <div class="materials__panel-item" data-material-panel-item="{{ key }}" {% unless forloop.first %}hidden{% endunless %} {{ block.shopify_attributes }}>
+          {%- if block.settings.texture -%}
+            {{ block.settings.texture | image_url: width: 1024 | image_tag: class: 'panel__swatch', loading: 'lazy', alt: block.settings.name }}
+          {%- else -%}
+            <img class="panel__swatch" src="{{ tex_asset | asset_url }}" alt="{{ 'sections.materials.texture_alt' | t: name: block.settings.name }}" loading="lazy" width="512" height="205">
+          {%- endif -%}
+          <h3 class="panel__name"><span class="panel__icon">{% render 'luxor-icon', icon: block.settings.icon %}</span>{{ block.settings.name }}</h3>
+          <p class="panel__meta"><span>{{ block.settings.origin }}</span><span>{{ block.settings.age }}</span></p>
+          <p class="panel__memory">{{ block.settings.memory }}</p>
+          <p class="panel__craft">{{ block.settings.craft }}</p>
+        </div>
+      {%- endfor -%}
+    </aside>
+  </div>
+  <ul class="materials__index" data-material-index role="tablist" aria-label="{{ 'sections.materials.tablist' | t }}">
+    {%- for block in section.blocks -%}
+      <li role="presentation">
+        <button role="tab" id="tab-{{ block.settings.map_node }}" aria-selected="{% if forloop.first %}true{% else %}false{% endif %}" aria-controls="panel-materias" data-key="{{ block.settings.map_node }}">
+          {{- block.settings.name }} — {{ block.settings.origin | split: ',' | first -}}
+        </button>
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+<style>
+  .materials__panel-item { display: grid; gap: 1.1rem; align-content: start; }
+  .materials__panel-item[hidden] { display: none; }
+</style>
+
+{% schema %}
+{
+  "name": "Carta de materias",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 02 · Carta de materias" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Cuatro orígenes," },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "un atelier." }
+  ],
+  "blocks": [
+    {
+      "type": "material",
+      "name": "Materia",
+      "settings": [
+        {
+          "type": "select",
+          "id": "map_node",
+          "label": "Nodo del mapa",
+          "options": [
+            { "value": "travertino", "label": "Travertino — Tivoli" },
+            { "value": "alabastro", "label": "Alabastro — Volterra" },
+            { "value": "laton", "label": "Latón — Anatolia" },
+            { "value": "cedro", "label": "Cedro — Atlas" }
+          ],
+          "default": "travertino"
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icono",
+          "options": [
+            { "value": "mat-travertino", "label": "Estratos (travertino)" },
+            { "value": "mat-alabastro", "label": "Luz (alabastro)" },
+            { "value": "mat-laton", "label": "Lingote (latón)" },
+            { "value": "mat-cedro", "label": "Anillos (cedro)" }
+          ],
+          "default": "mat-travertino"
+        },
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Travertino" },
+        { "type": "text", "id": "origin", "label": "Origen", "default": "Tivoli, Lacio" },
+        { "type": "text", "id": "age", "label": "Edad / memoria corta", "default": "80.000 años" },
+        { "type": "textarea", "id": "memory", "label": "Memoria (párrafo)", "default": "Sedimento de aguas termales depositado capa a capa desde el Pleistoceno. Con esta piedra se levantó el Coliseo; sus poros son burbujas de un manantial extinto." },
+        { "type": "text", "id": "craft", "label": "Oficio", "default": "Cantería y corte a hilo diamantado" },
+        { "type": "image_picker", "id": "texture", "label": "Textura (opcional)", "info": "Sin imagen se usa la textura LUXOR del nodo elegido." }
+      ]
+    }
+  ],
+  "max_blocks": 4,
+  "presets": [
+    {
+      "name": "Carta de materias",
+      "blocks": [
+        { "type": "material", "settings": { "map_node": "travertino", "icon": "mat-travertino", "name": "Travertino", "origin": "Tivoli, Lacio", "age": "80.000 años", "memory": "Sedimento de aguas termales depositado capa a capa desde el Pleistoceno. Con esta piedra se levantó el Coliseo; sus poros son burbujas de un manantial extinto.", "craft": "Cantería y corte a hilo diamantado" } },
+        { "type": "material", "settings": { "map_node": "alabastro", "icon": "mat-alabastro", "name": "Alabastro", "origin": "Volterra, Toscana", "age": "5.000 años de oficio", "memory": "La piedra de los vasos canopos y de las ventanas que iluminaban templos antes del vidrio. Es la única materia de la casa que deja pasar la luz.", "craft": "Torneado en húmedo y pulido al agua" } },
+        { "type": "material", "settings": { "map_node": "laton", "icon": "mat-laton", "name": "Latón", "origin": "Anatolia y el Levante", "age": "Edad del Bronce", "memory": "La primera aleación deliberada del ser humano: cobre y zinc fundidos hasta dar un oro que se puede trabajar. Envejece hacia el bronce, nunca hacia el óxido.", "craft": "Fundición a la cera perdida y cincelado" } },
+        { "type": "material", "settings": { "map_node": "cedro", "icon": "mat-cedro", "name": "Cedro", "origin": "Cordillera del Atlas", "age": "4.600 años navegando", "memory": "La madera de las barcas solares de Keops, enterradas junto a la Gran Pirámide y aún intactas. Su resina perfuma siglos y repele el tiempo.", "craft": "Ebanistería de vaciado y aceitado natural" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

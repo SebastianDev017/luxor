@@ -1,0 +1,142 @@
+<style>
+  .search-form {
+    max-width: 46rem;
+    margin-bottom: clamp(3rem, 7vh, 5rem);
+  }
+  .search-form .field input {
+    font-family: var(--font-display);
+    font-size: clamp(1.4rem, 1rem + 2.2vw, 2.4rem);
+    padding: 1rem 1.2rem;
+  }
+  .search-count {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: clamp(1.75rem, 4vh, 2.75rem);
+  }
+  .search-results {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+    gap: clamp(1.5rem, 3vw, 2.5rem);
+    margin: 0;
+    padding: 0;
+  }
+  .search-entry {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding-top: 1.1rem;
+  }
+  .search-entry__title {
+    font-size: 1.35rem;
+    font-weight: 440;
+    margin-bottom: 0.5rem;
+  }
+  .search-entry__title a { transition: color 0.3s; }
+  .search-entry__title a:hover { color: var(--brass-dark); }
+  .search-entry__excerpt {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+  }
+  .search-empty {
+    color: var(--text-muted);
+    max-width: 34rem;
+  }
+  .search-pag {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+  }
+  .search-pag__num {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+</style>
+
+<section class="search-main">
+  <div class="page-shell">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    <h1 class="page-title">{{ 'general.search.search' | t }}</h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" class="search-form">
+      <div class="field">
+        <label for="SearchInput">{{ 'general.search.search' | t }}</label>
+        <input
+          type="search"
+          id="SearchInput"
+          name="q"
+          value="{{ search.terms | escape }}"
+          placeholder="{{ 'general.search.placeholder' | t }}"
+          autocomplete="off"
+        >
+      </div>
+      <button type="submit" class="btn btn--brass">{{ 'general.search.search' | t }}</button>
+    </form>
+
+    {%- if search.performed -%}
+      {%- assign terms_escaped = search.terms | escape -%}
+      {%- paginate search.results by 12 -%}
+        {%- if search.results_count > 0 -%}
+          <p class="search-count" role="status">
+            {{ 'general.search.results_with_count' | t: count: search.results_count, terms: terms_escaped }}
+          </p>
+          <ul class="search-results">
+            {%- for item in search.results -%}
+              <li class="search-item">
+                {%- case item.object_type -%}
+                  {%- when 'product' -%}
+                    {% render 'product-card', product: item %}
+                  {%- when 'article' -%}
+                    <article class="search-entry">
+                      <h2 class="search-entry__title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
+                      <p class="search-entry__excerpt">{{ item.excerpt_or_content | strip_html | truncate: 170 }}</p>
+                    </article>
+                  {%- else -%}
+                    <article class="search-entry">
+                      <h2 class="search-entry__title"><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
+                      <p class="search-entry__excerpt">{{ item.content | strip_html | truncate: 170 }}</p>
+                    </article>
+                {%- endcase -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+          {%- if paginate.pages > 1 -%}
+            <nav class="search-pag" aria-label="{{ 'general.pagination.page' | t: number: paginate.current_page }}">
+              {%- if paginate.previous -%}
+                <a class="btn btn--ghost" href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>
+              {%- endif -%}
+              <span class="search-pag__num">{{ 'general.pagination.page' | t: number: paginate.current_page }}</span>
+              {%- if paginate.next -%}
+                <a class="btn btn--ghost" href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="search-empty" role="status">{{ 'general.search.no_results' | t: terms: terms_escaped }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Búsqueda",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "§ Registro"
+    }
+  ]
+}
+{% endschema %}

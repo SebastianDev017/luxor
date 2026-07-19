@@ -1,0 +1,261 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Etiquetado \"{{ tags }}\"",
+      "page": "Página {{ page }}"
+    },
+    "brand": {
+      "byline": "Casa de Objetos"
+    },
+    "accessibility": {
+      "home": "inicio",
+      "nav": "Secciones",
+      "footer_nav": "Pie de página",
+      "close": "Cerrar",
+      "next": "Siguiente",
+      "previous": "Anterior"
+    },
+    "pagination": {
+      "previous": "Anterior",
+      "next": "Siguiente",
+      "page": "Página {{ number }}"
+    },
+    "search": {
+      "search": "Buscar",
+      "placeholder": "Buscar en la casa",
+      "no_results": "Nada en el registro para \"{{ terms }}\". Prueba con otra palabra.",
+      "results_with_count": {
+        "one": "{{ count }} resultado para \"{{ terms }}\"",
+        "other": "{{ count }} resultados para \"{{ terms }}\""
+      }
+    },
+    "social": {
+      "share": "Compartir"
+    },
+    "password_page": {
+      "opening_soon": "La casa abre pronto",
+      "login_form_heading": "Entrar con contraseña",
+      "login_form_password_label": "Contraseña",
+      "login_form_submit": "Entrar",
+      "admin_link_html": "¿Eres el propietario? <a href=\"/admin\">Accede aquí</a>"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Saltar al contenido",
+    "unit_price_separator": "por",
+    "total_reviews": "reseñas en total",
+    "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas"
+  },
+  "sections": {
+    "header": {
+      "materials": "Materias",
+      "collection": "Colección",
+      "configurator": "Configurador",
+      "method": "Método",
+      "studio": "Estudio",
+      "cta": "Encargar",
+      "cart": "Cesta",
+      "account": "Cuenta"
+    },
+    "manifesto": {
+      "aria": "Manifiesto"
+    },
+    "materials": {
+      "texture_alt": "Textura macro de {{ name }}",
+      "tablist": "Materias"
+    },
+    "lookbook": {
+      "from_price": "desde"
+    },
+    "process": {
+      "image_alt": "Manos de un tornero dando forma a un vaso de alabastro en el torno, polvo de piedra en la luz"
+    },
+    "studio": {
+      "image_alt": "Interior mediterráneo al atardecer con lámpara de alabastro sobre mesa de travertino"
+    },
+    "configurator": {
+      "canvas_aria": "Vista tridimensional de la pieza. Arrastra para rotar.",
+      "drag_hint": "Arrastra para rotar la pieza",
+      "material": "Material",
+      "finish": "Acabado",
+      "size": "Tamaño",
+      "confirm": "Encargo registrado",
+      "soldout": "Agotado"
+    },
+    "cart": {
+      "title": "La cesta",
+      "empty": "La cesta está vacía.",
+      "continue": "Ver la colección",
+      "subtotal": "Subtotal",
+      "checkout": "Tramitar el encargo",
+      "remove": "Quitar",
+      "quantity": "Cantidad",
+      "note_label": "Nota para el atelier",
+      "taxes_shipping": "Impuestos y envío se calculan al tramitar el encargo.",
+      "update": "Actualizar"
+    },
+    "collection_template": {
+      "empty": "No hay piezas en esta colección todavía.",
+      "filter": "Filtrar",
+      "sort": "Ordenar",
+      "products_count": {
+        "one": "{{ count }} pieza",
+        "other": "{{ count }} piezas"
+      }
+    },
+    "product": {
+      "add_to_cart": "Encargar esta pieza",
+      "sold_out": "Agotado",
+      "unavailable": "No disponible",
+      "quantity": "Cantidad",
+      "vendor": "Casa",
+      "sku": "Referencia",
+      "description": "La pieza",
+      "view_details": "Ver la pieza",
+      "from_price": "desde",
+      "regular_price": "Precio",
+      "shipping_note": "Cada pieza se produce a pedido, se numera y se firma en el atelier."
+    },
+    "blog": {
+      "read_more": "Seguir leyendo",
+      "by_author": "por {{ author }}",
+      "comments": {
+        "one": "{{ count }} comentario",
+        "other": "{{ count }} comentarios"
+      }
+    },
+    "list_collections": {
+      "title": "Colecciones"
+    },
+    "page_404": {
+      "title": "Esta sala no existe",
+      "subtext": "La pieza que buscas no está en el registro de la casa.",
+      "back_home": "Volver al inicio"
+    }
+  },
+  "templates": {
+    "contact": {
+      "form": {
+        "name": "Nombre",
+        "email": "Correo",
+        "message": "Mensaje",
+        "send": "Enviar",
+        "post_success": "Gracias por escribir a la casa. Respondemos en menos de 48 horas."
+      }
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Cuenta",
+      "details": "Datos",
+      "view_addresses": "Ver direcciones",
+      "return": "Volver a la cuenta"
+    },
+    "account_fallback": "Cuenta",
+    "activate_account": {
+      "title": "Activar cuenta",
+      "subtext": "Crea tu contraseña para activar la cuenta.",
+      "password": "Contraseña",
+      "password_confirm": "Confirmar contraseña",
+      "submit": "Activar",
+      "cancel": "Rechazar invitación"
+    },
+    "addresses": {
+      "title": "Direcciones",
+      "default": "Predeterminada",
+      "add_new": "Añadir dirección",
+      "edit_address": "Editar dirección",
+      "first_name": "Nombre",
+      "last_name": "Apellidos",
+      "company": "Empresa",
+      "address1": "Dirección 1",
+      "address2": "Dirección 2",
+      "city": "Ciudad",
+      "country": "País/región",
+      "province": "Provincia",
+      "zip": "Código postal",
+      "phone": "Teléfono",
+      "set_default": "Usar como predeterminada",
+      "add": "Guardar",
+      "update": "Actualizar",
+      "cancel": "Cancelar",
+      "edit": "Editar",
+      "delete": "Eliminar",
+      "delete_confirm": "¿Seguro que quieres eliminar esta dirección?"
+    },
+    "log_in": "Iniciar sesión",
+    "log_out": "Cerrar sesión",
+    "login_page": {
+      "title": "Iniciar sesión",
+      "email": "Correo",
+      "password": "Contraseña",
+      "forgot_password": "¿Olvidaste la contraseña?",
+      "sign_in": "Entrar",
+      "guest_title": "Continuar como invitado",
+      "guest_continue": "Continuar",
+      "create_account": "Crear cuenta"
+    },
+    "orders": {
+      "title": "Historial de encargos",
+      "order_number": "Encargo",
+      "date": "Fecha",
+      "payment_status": "Estado del pago",
+      "fulfillment_status": "Estado del envío",
+      "total": "Total",
+      "none": "Todavía no has hecho ningún encargo."
+    },
+    "order": {
+      "title": "Encargo {{ name }}",
+      "date_html": "Realizado el {{ date }}",
+      "cancelled_html": "Encargo cancelado el {{ date }}",
+      "cancelled_reason": "Motivo: {{ reason }}",
+      "billing_address": "Dirección de facturación",
+      "payment_status": "Estado del pago",
+      "shipping_address": "Dirección de envío",
+      "fulfillment_status": "Estado del envío",
+      "discount": "Descuento",
+      "shipping": "Envío",
+      "tax": "Impuestos",
+      "product": "Pieza",
+      "sku": "Referencia",
+      "price": "Precio",
+      "quantity": "Cantidad",
+      "total": "Total",
+      "subtotal": "Subtotal"
+    },
+    "recover_password": {
+      "title": "Recuperar contraseña",
+      "email": "Correo",
+      "subtext": "Te enviaremos un correo para restablecerla.",
+      "submit": "Enviar",
+      "success": "Te hemos enviado un correo con las instrucciones."
+    },
+    "register": {
+      "title": "Crear cuenta",
+      "first_name": "Nombre",
+      "last_name": "Apellidos",
+      "email": "Correo",
+      "password": "Contraseña",
+      "submit": "Crear"
+    },
+    "reset_password": {
+      "title": "Restablecer contraseña",
+      "subtext": "Introduce una contraseña nueva",
+      "password": "Contraseña",
+      "password_confirm": "Confirmar contraseña",
+      "submit": "Restablecer"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "Tarjeta regalo de {{ shop }} por valor de {{ value }}",
+      "subtext": "Tu tarjeta regalo",
+      "disabled": "Deshabilitada",
+      "expired": "Caducada el {{ expiry }}",
+      "active": "Caduca el {{ expiry }}",
+      "redeem": "Usa este código al tramitar tu encargo",
+      "shop_link": "Visitar la tienda",
+      "print": "Imprimir"
+    }
+  }
+}

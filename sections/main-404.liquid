@@ -1,0 +1,47 @@
+<style>
+  .nf-shell {
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .nf-shell .page-title {
+    margin-bottom: 1.2rem;
+  }
+  .nf-shell .page-title em {
+    color: var(--brass-dark);
+    font-weight: 450;
+  }
+  .nf-sub {
+    color: var(--text-muted);
+    max-width: 28rem;
+    margin-bottom: 2.75rem;
+  }
+</style>
+
+<section class="nf-main">
+  <div class="page-shell nf-shell">
+    <p class="eyebrow eyebrow--center">§ ∅</p>
+    {%- assign nf_words = 'sections.page_404.title' | t | split: ' ' -%}
+    {%- assign nf_last = nf_words | last -%}
+    {%- assign nf_head = nf_words | size | minus: 1 -%}
+    <h1 class="page-title">
+      {%- if nf_head > 0 -%}
+        {%- for word in nf_words limit: nf_head -%}{{ word }} {% endfor -%}<em>{{ nf_last }}</em>
+      {%- else -%}
+        <em>{{ nf_last }}</em>
+      {%- endif -%}
+    </h1>
+    <p class="nf-sub">{{ 'sections.page_404.subtext' | t }}</p>
+    <a class="btn btn--brass" href="{{ routes.root_url }}">{{ 'sections.page_404.back_home' | t }}</a>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Página 404",
+  "settings": []
+}
+{% endschema %}

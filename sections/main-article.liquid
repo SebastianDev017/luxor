@@ -1,0 +1,251 @@
+<style>
+  .art-header { margin-bottom: clamp(2rem, 5vh, 3rem); }
+  .art-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1.4rem;
+  }
+  .art-header .page-title { margin-bottom: 0; }
+  .art-figure { margin: 0 0 clamp(2.5rem, 6vh, 4rem); }
+  .art-figure img { width: 100%; height: auto; }
+  .art-rte {
+    max-width: 46rem;
+    margin-inline: auto;
+    font-size: 1.05rem;
+    line-height: 1.75;
+  }
+  .art-rte p { margin-bottom: 1.4em; }
+  .art-rte h2 {
+    font-size: 1.9rem;
+    font-weight: 440;
+    margin: 2em 0 0.7em;
+  }
+  .art-rte h3 {
+    font-size: 1.4rem;
+    font-weight: 440;
+    margin: 1.8em 0 0.6em;
+  }
+  .art-rte a {
+    color: var(--brass-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .art-rte img { margin: 2rem 0; height: auto; }
+  .art-rte blockquote {
+    border-left: 1px solid var(--brass);
+    padding-left: 1.5rem;
+    margin: 2rem 0;
+    font-family: var(--font-display);
+    font-size: 1.35rem;
+    line-height: 1.4;
+  }
+  .art-rte ul,
+  .art-rte ol {
+    padding-left: 1.4rem;
+    margin-bottom: 1.4em;
+  }
+  .art-footer {
+    max-width: 46rem;
+    margin: clamp(2.5rem, 6vh, 4rem) auto 0;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding-top: 1.6rem;
+  }
+  .art-back {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    padding-block: 0.3rem;
+  }
+  .art-back::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-lux);
+  }
+  .art-back:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .art-comments {
+    max-width: 46rem;
+    margin: clamp(3rem, 8vh, 5rem) auto 0;
+  }
+  .art-comments__title {
+    font-size: 1.6rem;
+    font-weight: 440;
+    margin-bottom: 1.4rem;
+  }
+  .art-comment {
+    border-top: 1px solid color-mix(in srgb, var(--ink) 10%, transparent);
+    padding: 1.6rem 0;
+  }
+  .art-comment__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.6rem;
+  }
+  .art-comment__body { font-size: 0.97rem; }
+  .art-comment__body p { margin-bottom: 0.8em; }
+  .art-comment__body p:last-child { margin-bottom: 0; }
+  .art-comments__pagination {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.2rem;
+    margin-top: 1.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .art-comments__pagination a { transition: color 0.3s; }
+  .art-comments__pagination a:hover { color: var(--brass-dark); }
+  .art-form {
+    margin-top: 2.5rem;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding-top: 2rem;
+  }
+  .art-form__title {
+    font-size: 1.3rem;
+    font-weight: 440;
+    margin-bottom: 1.4rem;
+  }
+</style>
+
+<article class="page-shell">
+  <header class="art-header">
+    <p class="eyebrow"><a href="{{ blog.url }}">{{ blog.title }}</a></p>
+    <p class="art-meta">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d.%m.%Y' }}</time>
+      <span>·</span>
+      <span>{{ 'sections.blog.by_author' | t: author: article.author }}</span>
+    </p>
+    <h1 class="page-title">{{ article.title }}</h1>
+  </header>
+
+  {%- if article.image -%}
+    {%- assign art_alt = article.image.alt | default: article.title | escape -%}
+    <figure class="art-figure">
+      {{ article.image | image_url: width: 1800 | image_tag: loading: 'lazy', alt: art_alt }}
+    </figure>
+  {%- endif -%}
+
+  <div class="art-rte">
+    {{ article.content }}
+  </div>
+
+  <footer class="art-footer">
+    <a class="art-back" href="{{ blog.url }}">{{ section.settings.back_label }}</a>
+  </footer>
+
+  {%- if blog.comments_enabled? -%}
+    <section class="art-comments" id="comentarios">
+      <h2 class="art-comments__title">{{ 'sections.blog.comments' | t: count: article.comments_count }}</h2>
+
+      {%- if article.comments_count > 0 -%}
+        {%- paginate article.comments by 5 -%}
+          <div class="art-comments__list">
+            {%- for comment in article.comments -%}
+              <div class="art-comment" id="{{ comment.id }}">
+                <p class="art-comment__meta">
+                  <time datetime="{{ comment.created_at | date: '%Y-%m-%d' }}">{{ comment.created_at | date: '%d.%m.%Y' }}</time>
+                  <span>·</span>
+                  <span>{{ 'sections.blog.by_author' | t: author: comment.author }}</span>
+                </p>
+                <div class="art-comment__body">{{ comment.content }}</div>
+              </div>
+            {%- endfor -%}
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="art-comments__pagination" aria-label="Paginación de comentarios">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}#comentarios">{{ 'general.pagination.previous' | t }}</a>
+              {%- endif -%}
+              <span>{{ 'general.pagination.page' | t: number: paginate.current_page }}</span>
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}#comentarios">{{ 'general.pagination.next' | t }}</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- endpaginate -%}
+      {%- endif -%}
+
+      <div class="art-form">
+        <h3 class="art-form__title">{{ section.settings.form_title }}</h3>
+        {%- form 'new_comment', article -%}
+          {%- if form.posted_successfully? -%}
+            <p class="form-status" role="status">{{ section.settings.success_text }}</p>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="form-status form-status--error" role="alert">
+              {%- for field in form.errors -%}
+                <p>{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</p>
+              {%- endfor -%}
+            </div>
+          {%- endif -%}
+          <div class="field">
+            <label for="CommentAuthor-{{ section.id }}">{{ 'templates.contact.form.name' | t }}</label>
+            <input type="text" name="comment[author]" id="CommentAuthor-{{ section.id }}" autocomplete="name" required value="{{ form.author }}">
+          </div>
+          <div class="field">
+            <label for="CommentEmail-{{ section.id }}">{{ 'templates.contact.form.email' | t }}</label>
+            <input type="email" name="comment[email]" id="CommentEmail-{{ section.id }}" autocomplete="email" required value="{{ form.email }}">
+          </div>
+          <div class="field">
+            <label for="CommentBody-{{ section.id }}">{{ 'templates.contact.form.message' | t }}</label>
+            <textarea name="comment[body]" id="CommentBody-{{ section.id }}" rows="6" required>{{ form.body }}</textarea>
+          </div>
+          <button type="submit" class="btn btn--brass"><span>{{ 'templates.contact.form.send' | t }}</span></button>
+        {%- endform -%}
+      </div>
+    </section>
+  {%- endif -%}
+</article>
+
+{% schema %}
+{
+  "name": "Artículo principal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "back_label",
+      "label": "Enlace de vuelta al cuaderno",
+      "default": "Volver al cuaderno"
+    },
+    {
+      "type": "text",
+      "id": "form_title",
+      "label": "Título del formulario de comentarios",
+      "default": "Escribir al cuaderno"
+    },
+    {
+      "type": "text",
+      "id": "success_text",
+      "label": "Mensaje tras enviar un comentario",
+      "default": "Gracias. Tu comentario entra en el registro de la casa tras su revisión."
+    }
+  ]
+}
+{% endschema %}

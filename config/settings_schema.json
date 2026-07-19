@@ -1,0 +1,32 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "LUXOR",
+    "theme_version": "1.0.0",
+    "theme_author": "SebastianDev017",
+    "theme_documentation_url": "https://github.com/SebastianDev017/luxor",
+    "theme_support_url": "https://github.com/SebastianDev017/luxor/issues"
+  },
+  {
+    "name": "Colores",
+    "settings": [
+      { "type": "color", "id": "color_bone", "label": "Hueso (fondo claro)", "default": "#EDE5D6" },
+      { "type": "color", "id": "color_bone_deep", "label": "Hueso profundo", "default": "#E3D8C4" },
+      { "type": "color", "id": "color_stone", "label": "Piedra media", "default": "#C9B99F" },
+      { "type": "color", "id": "color_ink", "label": "Tinta (fondo oscuro)", "default": "#191410" },
+      { "type": "color", "id": "color_umber", "label": "Umbría (secciones oscuras)", "default": "#241C14" },
+      { "type": "color", "id": "color_brass", "label": "Latón", "default": "#A97F45" },
+      { "type": "color", "id": "color_brass_bright", "label": "Latón claro (sobre oscuro)", "default": "#C89E63" },
+      { "type": "color", "id": "color_brass_dark", "label": "Latón oscuro (texto AA sobre claro)", "default": "#7C5A2E" }
+    ]
+  },
+  {
+    "name": "Tipografía",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "LUXOR autoaloja Jost (encabezados, 400–500), Roboto (párrafos) e IBM Plex Mono (numeración y rótulos). No usa la biblioteca de fuentes de Shopify para mantener la identidad 1:1."
+      }
+    ]
+  }
+]

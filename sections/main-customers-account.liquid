@@ -1,0 +1,154 @@
+<style>
+  .acct-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem 2rem;
+    margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  }
+  .acct-head .page-title { margin-bottom: 0; }
+  .acct-logout {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.2rem;
+    transition: border-color 0.3s var(--ease-lux);
+  }
+  .acct-logout:hover { border-bottom-color: currentColor; }
+  .acct-grid {
+    display: grid;
+    grid-template-columns: minmax(15rem, 21rem) minmax(0, 1fr);
+    gap: clamp(2rem, 4vw, 4rem);
+    align-items: start;
+  }
+  .acct-card {
+    border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding: clamp(1.4rem, 3vw, 2rem);
+    display: grid;
+    gap: 0.9rem;
+    align-content: start;
+  }
+  .acct-card h2,
+  .acct-orders h2 {
+    font-size: 1.35rem;
+    font-weight: 440;
+  }
+  .acct-card p { font-size: 0.92rem; }
+  .acct-email { color: var(--text-muted); }
+  .acct-card a {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.2rem;
+    justify-self: start;
+    transition: border-color 0.3s var(--ease-lux);
+  }
+  .acct-card a:hover { border-bottom-color: currentColor; }
+  .acct-orders h2 { margin-bottom: 1.4rem; }
+  .acct-tablewrap { overflow-x: auto; }
+  .acct-tablewrap .luxor-table { min-width: 40rem; }
+  .acct-tablewrap .luxor-table a {
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.15rem;
+  }
+  .acct-empty { color: var(--text-muted); }
+  .acct-pagination {
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    margin-top: 2rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .acct-pagination span { color: var(--text-muted); }
+  .acct-pagination a {
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.2rem;
+  }
+  @media (max-width: 960px) {
+    .acct-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="page-shell">
+  <p class="eyebrow">{{ shop.name }} — {{ 'general.brand.byline' | t }}</p>
+  <div class="acct-head">
+    <h1 class="page-title">{{ 'customer.account.title' | t }}</h1>
+    <a class="acct-logout" href="{{ routes.account_logout_url }}">{{ 'customer.log_out' | t }}</a>
+  </div>
+
+  <div class="acct-grid">
+    <aside class="acct-card">
+      <h2>{{ 'customer.account.details' | t }}</h2>
+      <p>{{ customer.name }}</p>
+      <p class="acct-email">{{ customer.email }}</p>
+      {%- if customer.default_address -%}
+        {{ customer.default_address | format_address }}
+      {%- endif -%}
+      <a href="{{ routes.account_addresses_url }}">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</a>
+    </aside>
+
+    <div class="acct-orders">
+      <h2>{{ 'customer.orders.title' | t }}</h2>
+      {%- paginate customer.orders by 10 -%}
+        {%- if customer.orders.size > 0 -%}
+          <div class="acct-tablewrap">
+            <table class="luxor-table">
+              <thead>
+                <tr>
+                  <th scope="col">{{ 'customer.orders.order_number' | t }}</th>
+                  <th scope="col">{{ 'customer.orders.date' | t }}</th>
+                  <th scope="col">{{ 'customer.orders.payment_status' | t }}</th>
+                  <th scope="col">{{ 'customer.orders.fulfillment_status' | t }}</th>
+                  <th scope="col">{{ 'customer.orders.total' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                {%- for order in customer.orders -%}
+                  <tr>
+                    <td><a href="{{ order.customer_url }}">{{ order.name }}</a></td>
+                    <td>{{ order.created_at | date: '%d/%m/%Y' }}</td>
+                    <td>{{ order.financial_status_label }}</td>
+                    <td>{{ order.fulfillment_status_label }}</td>
+                    <td>{{ order.total_price | money }}</td>
+                  </tr>
+                {%- endfor -%}
+              </tbody>
+            </table>
+          </div>
+          {%- if paginate.pages > 1 -%}
+            <nav class="acct-pagination" aria-label="{{ 'customer.orders.title' | t }}">
+              {%- if paginate.previous -%}
+                <a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>
+              {%- endif -%}
+              <span>{{ 'general.pagination.page' | t: number: paginate.current_page }}</span>
+              {%- if paginate.next -%}
+                <a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>
+              {%- endif -%}
+            </nav>
+          {%- endif -%}
+        {%- else -%}
+          <p class="acct-empty">{{ 'customer.orders.none' | t }}</p>
+        {%- endif -%}
+      {%- endpaginate -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Clientes — cuenta",
+  "settings": []
+}
+{% endschema %}

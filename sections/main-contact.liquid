@@ -1,0 +1,114 @@
+<style>
+  .contact-main .page-title em {
+    color: var(--brass-dark);
+    font-weight: 450;
+  }
+  .contact-intro {
+    color: var(--text-muted);
+    max-width: 34rem;
+    margin: -1.25rem 0 2.5rem;
+  }
+  .contact-form textarea {
+    resize: vertical;
+    min-height: 10rem;
+  }
+  .contact-errors {
+    list-style: none;
+    display: grid;
+    gap: 0.4rem;
+    margin: 0;
+    padding: 0;
+  }
+</style>
+
+<section class="contact-main">
+  <div class="page-shell page-shell--narrow">
+    {%- if section.settings.eyebrow != blank -%}
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    {%- endif -%}
+    {%- assign ct_words = page.title | split: ' ' -%}
+    {%- assign ct_last = ct_words | last -%}
+    {%- assign ct_head = ct_words | size | minus: 1 -%}
+    <h1 class="page-title">
+      {%- if ct_head > 0 -%}
+        {%- for word in ct_words limit: ct_head -%}{{ word }} {% endfor -%}<em>{{ ct_last }}</em>
+      {%- else -%}
+        {{ page.title }}
+      {%- endif -%}
+    </h1>
+
+    {%- if page.content != blank -%}
+      <div class="contact-intro">{{ page.content }}</div>
+    {%- endif -%}
+
+    {%- form 'contact', class: 'contact-form' -%}
+      {%- if form.posted_successfully? -%}
+        <p class="form-status" role="status">{{ 'templates.contact.form.post_success' | t }}</p>
+      {%- endif -%}
+
+      {%- if form.errors -%}
+        <div class="form-status form-status--error" role="alert">
+          <ul class="contact-errors">
+            {%- for field in form.errors -%}
+              <li>{{ form.errors.translated_fields[field] | capitalize }} — {{ form.errors.messages[field] }}</li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <div class="field">
+        <label for="ContactName">{{ 'templates.contact.form.name' | t }}</label>
+        <input
+          type="text"
+          id="ContactName"
+          name="contact[name]"
+          value="{{ form.name }}"
+          autocomplete="name"
+          required
+        >
+      </div>
+
+      <div class="field">
+        <label for="ContactEmail">{{ 'templates.contact.form.email' | t }}</label>
+        <input
+          type="email"
+          id="ContactEmail"
+          name="contact[email]"
+          value="{{ form.email }}"
+          autocomplete="email"
+          spellcheck="false"
+          autocapitalize="off"
+          required
+          {% if form.errors contains 'email' %}aria-invalid="true"{% endif %}
+        >
+      </div>
+
+      <div class="field">
+        <label for="ContactBody">{{ 'templates.contact.form.message' | t }}</label>
+        <textarea
+          id="ContactBody"
+          name="contact[body]"
+          rows="8"
+          required
+          {% if form.errors contains 'body' %}aria-invalid="true"{% endif %}
+        >{{ form.body }}</textarea>
+      </div>
+
+      <button type="submit" class="btn btn--brass">{{ 'templates.contact.form.send' | t }}</button>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Página de contacto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "§ Contacto"
+    }
+  ]
+}
+{% endschema %}

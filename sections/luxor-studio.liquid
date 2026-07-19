@@ -1,0 +1,59 @@
+<section class="studio" data-section="studio" id="estudio">
+  <figure class="studio__media">
+    {%- if section.settings.image -%}
+      {{ section.settings.image | image_url: width: 1920 | image_tag: loading: 'lazy', alt: section.settings.image.alt }}
+    {%- else -%}
+      <img src="{{ 'lifestyle.webp' | asset_url }}" alt="{{ 'sections.studio.image_alt' | t }}" loading="lazy" width="1920" height="1080">
+    {%- endif -%}
+  </figure>
+  <div class="studio__body">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="section-title">{{ section.settings.title_line_1 }}<br><em>{{ section.settings.title_line_2 }}</em></h2>
+    <div class="studio__founders">
+      {%- for block in section.blocks -%}
+        <article class="studio__founder" {{ block.shopify_attributes }}>
+          <h3>{{ block.settings.name }}</h3>
+          <p class="studio__role">{{ block.settings.role }}</p>
+          <p>{{ block.settings.bio }}</p>
+        </article>
+      {%- endfor -%}
+    </div>
+    {%- if section.settings.note != blank -%}
+      <p class="studio__note">{{ section.settings.note }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "El estudio",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Imagen lifestyle", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 06 · El estudio" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Dos oficios," },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "una casa." },
+    { "type": "text", "id": "note", "label": "Nota final", "default": "El atelier ocupa una antigua fundición en el Poblenou, Barcelona. Se visita con cita." }
+  ],
+  "blocks": [
+    {
+      "type": "founder",
+      "name": "Fundador",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Nombre", "default": "Elena Roig" },
+        { "type": "text", "id": "role", "label": "Rol", "default": "Directora de materia" },
+        { "type": "textarea", "id": "bio", "label": "Bio", "default": "Veinte años eligiendo bloques en Tivoli y Volterra. Dice que un buen travertino se reconoce por el sonido, no por el color." }
+      ]
+    }
+  ],
+  "max_blocks": 3,
+  "presets": [
+    {
+      "name": "El estudio",
+      "blocks": [
+        { "type": "founder", "settings": { "name": "Elena Roig", "role": "Directora de materia", "bio": "Veinte años eligiendo bloques en Tivoli y Volterra. Dice que un buen travertino se reconoce por el sonido, no por el color." } },
+        { "type": "founder", "settings": { "name": "Bruno Casale", "role": "Maestro de taller", "bio": "Tercera generación de torneros. Aprendió el oficio con alabastro de desecho; hoy firma cada pieza que sale del atelier." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

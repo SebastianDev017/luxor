@@ -1,0 +1,91 @@
+<style>
+  .page-main .page-title em {
+    color: var(--brass-dark);
+    font-weight: 450;
+  }
+  .rte {
+    line-height: 1.7;
+  }
+  .rte > *:first-child { margin-top: 0; }
+  .rte > *:last-child { margin-bottom: 0; }
+  .rte h2 {
+    font-size: clamp(1.7rem, 1.2rem + 1.8vw, 2.4rem);
+    font-weight: 420;
+    margin: 3rem 0 1rem;
+  }
+  .rte h3 {
+    font-size: 1.35rem;
+    font-weight: 440;
+    margin: 2.2rem 0 0.8rem;
+  }
+  .rte p {
+    margin-bottom: 1.2rem;
+  }
+  .rte a {
+    color: var(--brass-dark);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .rte blockquote {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-size: clamp(1.3rem, 1rem + 1.4vw, 1.8rem);
+    line-height: 1.32;
+    border-left: 1px solid var(--brass);
+    padding-left: clamp(1.25rem, 3vw, 2rem);
+    margin: 2.5rem 0;
+  }
+  .rte img {
+    width: 100%;
+    height: auto;
+    margin: 2.5rem 0;
+  }
+  .rte ul,
+  .rte ol {
+    margin: 0 0 1.2rem 1.2rem;
+  }
+  .rte li { margin-bottom: 0.4rem; }
+  .rte hr {
+    border: 0;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    margin: 3rem 0;
+  }
+</style>
+
+<section class="page-main">
+  <div class="page-shell{% if section.settings.narrow %} page-shell--narrow{% endif %}">
+    {%- assign pg_words = page.title | split: ' ' -%}
+    {%- assign pg_last = pg_words | last -%}
+    {%- assign pg_head = pg_words | size | minus: 1 -%}
+    <h1 class="page-title">
+      {%- if section.settings.italic_last and pg_head > 0 -%}
+        {%- for word in pg_words limit: pg_head -%}{{ word }} {% endfor -%}<em>{{ pg_last }}</em>
+      {%- else -%}
+        {{ page.title }}
+      {%- endif -%}
+    </h1>
+    <div class="rte">
+      {{ page.content }}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Página",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "narrow",
+      "label": "Columna de lectura estrecha",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "italic_last",
+      "label": "Última palabra del título en itálica",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

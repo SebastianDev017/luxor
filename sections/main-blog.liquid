@@ -1,0 +1,204 @@
+<style>
+  .blog-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .blog-entry {
+    display: grid;
+    grid-template-columns: minmax(0, 24rem) minmax(0, 1fr);
+    gap: clamp(1.5rem, 4vw, 4rem);
+    align-items: start;
+    padding: clamp(2.2rem, 6vh, 3.5rem) 0;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+  .blog-entry:last-child {
+    border-bottom: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+  }
+  .blog-entry--noimg { grid-template-columns: 1fr; }
+  .blog-entry__media {
+    display: block;
+    aspect-ratio: 16 / 9;
+    overflow: clip;
+    background: var(--bone-deep);
+  }
+  .blog-entry__media img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.001);
+    transition: transform 1.3s var(--ease-lux);
+  }
+  .blog-entry:hover .blog-entry__media img { transform: scale(1.018); }
+  .blog-entry__head {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.9rem;
+  }
+  .blog-entry__num { color: var(--brass-dark); }
+  .blog-entry__title {
+    font-size: clamp(1.7rem, 1.2rem + 2vw, 2.6rem);
+    font-weight: 420;
+    margin-bottom: 0.8rem;
+  }
+  .blog-entry__title a { transition: color 0.3s; }
+  .blog-entry__title a:hover { color: var(--brass-dark); }
+  .blog-entry__excerpt {
+    color: var(--text-muted);
+    font-size: 0.97rem;
+    max-width: 38rem;
+    margin-bottom: 1.4rem;
+  }
+  .blog-more {
+    position: relative;
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--brass-dark);
+    padding-block: 0.3rem;
+  }
+  .blog-more::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.4s var(--ease-lux);
+  }
+  .blog-more:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  .blog-empty {
+    color: var(--text-muted);
+    border-top: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    padding-top: 2rem;
+    max-width: 34rem;
+  }
+  .blog-pagination {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1.2rem;
+    margin-top: clamp(2.5rem, 6vh, 4rem);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+  .blog-pagination a { transition: color 0.3s; }
+  .blog-pagination a:hover { color: var(--brass-dark); }
+  .blog-pagination [aria-current='page'] {
+    color: var(--brass-dark);
+    border-bottom: 1px solid currentColor;
+  }
+  @media (max-width: 760px) {
+    .blog-entry { grid-template-columns: 1fr; }
+  }
+</style>
+
+<div class="page-shell">
+  {%- if section.settings.eyebrow != blank -%}
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+  {%- endif -%}
+
+  {%- liquid
+    assign title_words = blog.title | split: ' '
+    assign last_word = title_words | last
+    assign head_count = title_words.size | minus: 1
+  -%}
+  {%- if title_words.size > 1 -%}
+    <h1 class="page-title">{{ title_words | slice: 0, head_count | join: ' ' }} <em>{{ last_word }}</em></h1>
+  {%- else -%}
+    <h1 class="page-title">{{ blog.title }}</h1>
+  {%- endif -%}
+
+  {%- paginate blog.articles by 6 -%}
+    {%- if blog.articles.size == 0 -%}
+      <p class="blog-empty">{{ section.settings.empty_text }}</p>
+    {%- else -%}
+      <ul class="blog-list">
+        {%- for article in blog.articles -%}
+          {%- liquid
+            assign entry_index = paginate.current_offset | plus: forloop.index
+            if entry_index < 10
+              assign entry_num = entry_index | prepend: 'N.0'
+            else
+              assign entry_num = entry_index | prepend: 'N.'
+            endif
+          -%}
+          <li class="blog-entry{% unless article.image %} blog-entry--noimg{% endunless %}">
+            {%- if article.image -%}
+              {%- assign entry_alt = article.image.alt | default: article.title | escape -%}
+              <a class="blog-entry__media" href="{{ article.url }}" tabindex="-1" aria-hidden="true">
+                {{ article.image | image_url: width: 900 | image_tag: loading: 'lazy', alt: entry_alt }}
+              </a>
+            {%- endif -%}
+            <div class="blog-entry__body">
+              <p class="blog-entry__head">
+                <span class="blog-entry__num">{{ entry_num }}</span>
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">{{ article.published_at | date: '%d.%m.%Y' }}</time>
+              </p>
+              <h2 class="blog-entry__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+              <p class="blog-entry__excerpt">{{ article.excerpt_or_content | strip_html | truncate: 180 }}</p>
+              <a class="blog-more" href="{{ article.url }}">{{ 'sections.blog.read_more' | t }}</a>
+            </div>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if paginate.pages > 1 -%}
+        <nav class="blog-pagination" aria-label="Paginación">
+          {%- if paginate.previous -%}
+            <a href="{{ paginate.previous.url }}">{{ 'general.pagination.previous' | t }}</a>
+          {%- endif -%}
+          {%- for part in paginate.parts -%}
+            {%- if part.is_link -%}
+              <a href="{{ part.url }}" aria-label="{{ 'general.pagination.page' | t: number: part.title }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span>{{ part.title }}</span>
+            {%- endif -%}
+          {%- endfor -%}
+          {%- if paginate.next -%}
+            <a href="{{ paginate.next.url }}">{{ 'general.pagination.next' | t }}</a>
+          {%- endif -%}
+        </nav>
+      {%- endif -%}
+    {%- endif -%}
+  {%- endpaginate -%}
+</div>
+
+{% schema %}
+{
+  "name": "Blog principal",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Cuaderno de la casa"
+    },
+    {
+      "type": "text",
+      "id": "empty_text",
+      "label": "Texto cuando no hay entradas",
+      "default": "Todavía no hay entradas en el cuaderno de la casa."
+    }
+  ]
+}
+{% endschema %}

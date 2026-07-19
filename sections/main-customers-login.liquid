@@ -1,0 +1,110 @@
+<style>
+  .login-pane--recover { display: none; }
+  #recover:target { display: block; }
+  #recover:target ~ .login-pane--main { display: none; }
+  .login-sub {
+    color: var(--text-muted);
+    max-width: 28rem;
+    margin: -1rem 0 2rem;
+  }
+  .login-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 2rem;
+    margin-top: 1.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+  .login-links a {
+    color: var(--brass-dark);
+    border-bottom: 1px solid color-mix(in srgb, var(--brass-dark) 45%, transparent);
+    padding-bottom: 0.2rem;
+    transition: border-color 0.3s var(--ease-lux);
+  }
+  .login-links a:hover { border-bottom-color: currentColor; }
+  .login-guest {
+    margin-top: 2.6rem;
+    padding-top: 1.8rem;
+    border-top: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  }
+  .login-guest h2 {
+    font-size: 1.35rem;
+    font-weight: 440;
+    margin-bottom: 1.1rem;
+  }
+</style>
+
+<div class="page-shell page-shell--narrow">
+  <p class="eyebrow">{{ shop.name }} — {{ 'general.brand.byline' | t }}</p>
+
+  <div class="login-pane login-pane--recover" id="recover" tabindex="-1">
+    <h2 class="page-title">{{ 'customer.recover_password.title' | t }}</h2>
+    <p class="login-sub">{{ 'customer.recover_password.subtext' | t }}</p>
+    {%- form 'recover_customer_password' -%}
+      {%- assign recover_success = form.posted_successfully? -%}
+      {%- if form.errors -%}
+        <div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field">
+        <label for="RecoverEmail">{{ 'customer.recover_password.email' | t }}</label>
+        <input type="email" id="RecoverEmail" name="email" autocomplete="email" autocapitalize="off" required>
+      </div>
+      <button class="btn btn--brass" type="submit">{{ 'customer.recover_password.submit' | t }}</button>
+    {%- endform -%}
+    <div class="login-links">
+      <a href="#login">{{ 'customer.log_in' | t }}</a>
+    </div>
+  </div>
+
+  <div class="login-pane login-pane--main" id="login">
+    {%- assign title_words = 'customer.login_page.title' | t | split: ' ' -%}
+    <h1 class="page-title">
+      {%- for word in title_words -%}
+        {%- unless forloop.first %} {% endunless -%}
+        {%- if forloop.last and forloop.length > 1 -%}<em>{{ word }}</em>{%- else -%}{{ word }}{%- endif -%}
+      {%- endfor -%}
+    </h1>
+
+    {%- if recover_success -%}
+      <p class="form-status" role="status">{{ 'customer.recover_password.success' | t }}</p>
+    {%- endif -%}
+
+    {%- form 'customer_login', novalidate: 'novalidate' -%}
+      {%- if form.errors -%}
+        <div class="form-status form-status--error" role="alert">{{ form.errors | default_errors }}</div>
+      {%- endif -%}
+      <div class="field">
+        <label for="LoginEmail">{{ 'customer.login_page.email' | t }}</label>
+        <input type="email" id="LoginEmail" name="customer[email]" autocomplete="email" autocapitalize="off" required>
+      </div>
+      <div class="field">
+        <label for="LoginPassword">{{ 'customer.login_page.password' | t }}</label>
+        <input type="password" id="LoginPassword" name="customer[password]" autocomplete="current-password" required>
+      </div>
+      <button class="btn btn--brass" type="submit">{{ 'customer.login_page.sign_in' | t }}</button>
+    {%- endform -%}
+
+    <div class="login-links">
+      <a href="#recover">{{ 'customer.login_page.forgot_password' | t }}</a>
+      <a href="{{ routes.account_register_url }}">{{ 'customer.login_page.create_account' | t }}</a>
+    </div>
+
+    {%- if shop.checkout.guest_login -%}
+      <div class="login-guest">
+        <h2>{{ 'customer.login_page.guest_title' | t }}</h2>
+        {%- form 'guest_login' -%}
+          <button class="btn btn--ghost" type="submit">{{ 'customer.login_page.guest_continue' | t }}</button>
+        {%- endform -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Clientes — acceso",
+  "settings": []
+}
+{% endschema %}
