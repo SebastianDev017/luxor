@@ -88,6 +88,20 @@
   <script src="{{ 'ScrollTrigger.min.js' | asset_url }}" defer></script>
   <script src="{{ 'lenis.min.js' | asset_url }}" defer></script>
   <script src="{{ 'luxor-motion.js' | asset_url }}" defer></script>
+  <script>
+    window.LuxorShopCfg = {
+      moneyFormat: {{ shop.money_format | json }},
+      strings: {
+        quickAdd: {{ 'products.card.quick_add' | t | json }},
+        soldOut: {{ 'products.card.sold_out' | t | json }},
+        remove: {{ 'cart.drawer.remove' | t | json }},
+        increase: {{ 'cart.drawer.increase' | t | json }},
+        decrease: {{ 'cart.drawer.decrease' | t | json }},
+        goToPage: {{ 'accessibility.go_to_page' | t | json }}
+      }
+    }
+  </script>
+  <script src="{{ 'luxor-shop.js' | asset_url }}" defer></script>
 
   {{ content_for_header }}
 </head>
@@ -109,5 +123,8 @@
   </main>
 
   {% sections 'footer-group' %}
+
+  {% render 'cart-drawer' %}
+  {% render 'quick-view' %}
 </body>
 </html>

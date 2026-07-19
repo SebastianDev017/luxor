@@ -2,6 +2,8 @@
   <figure class="studio__media">
     {%- if section.settings.image -%}
       {{ section.settings.image | image_url: width: 1920 | image_tag: loading: 'lazy', alt: section.settings.image.alt }}
+    {%- elsif section.settings.image_asset != blank -%}
+      <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ 'sections.studio.image_alt' | t }}" loading="lazy" width="1920" height="1080">
     {%- else -%}
       <img src="{{ 'lifestyle.webp' | asset_url }}" alt="{{ 'sections.studio.image_alt' | t }}" loading="lazy" width="1920" height="1080">
     {%- endif -%}
@@ -29,6 +31,7 @@
   "name": "El estudio",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Imagen lifestyle", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "image_asset", "label": "Asset de imagen (avanzado)", "info": "Nombre de archivo en assets del tema. Solo si no hay imagen elegida." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 06 · El estudio" },
     { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Dos oficios," },
     { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "una casa." },

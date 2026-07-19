@@ -3,6 +3,8 @@
     <figure class="process__figure">
       {%- if section.settings.image -%}
         {{ section.settings.image | image_url: width: 1536 | image_tag: loading: 'lazy', alt: section.settings.image.alt | default: section.settings.caption }}
+      {%- elsif section.settings.image_asset != blank -%}
+        <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ 'sections.process.image_alt' | t }}" loading="lazy" width="1536" height="1024">
       {%- else -%}
         <img src="{{ 'atelier.webp' | asset_url }}" alt="{{ 'sections.process.image_alt' | t }}" loading="lazy" width="1536" height="1024">
       {%- endif -%}
@@ -36,6 +38,7 @@
   "name": "Método",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Imagen del atelier", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "image_asset", "label": "Asset de imagen (avanzado)", "info": "Nombre de archivo en assets del tema. Solo si no hay imagen elegida." },
     { "type": "text", "id": "caption", "label": "Pie de imagen", "default": "Atelier LUXOR, Barcelona. Torneado en húmedo de alabastro de Volterra." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 05 · Método" },
     { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Del estrato" },

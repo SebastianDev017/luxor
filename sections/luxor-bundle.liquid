@@ -1,0 +1,114 @@
+{%- liquid
+  assign real_blocks = 0
+  for block in section.blocks
+    if block.settings.product != blank
+      assign real_blocks = real_blocks | plus: 1
+    endif
+  endfor
+-%}
+<section class="lbundle" data-section="lbundle">
+  <header class="section-head">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="section-title">{{ section.settings.title_line_1 }}{% if section.settings.title_line_2 != blank %}<br><em>{{ section.settings.title_line_2 }}</em>{% endif %}</h2>
+    {%- if section.settings.intro != blank -%}
+      <p class="section-intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </header>
+
+  <div data-bundle data-bundle-discount="{{ section.settings.discount_pct }}">
+    <div class="lbundle__grid" style="--bundle-cols: {{ section.blocks.size | at_least: 2 | at_most: 4 }};">
+      {%- for block in section.blocks -%}
+        {%- assign product = block.settings.product -%}
+        <div class="lbundle__item" {{ block.shopify_attributes }}
+          {%- if product != blank and product.variants.size == 1 %} data-bundle-item data-variant-id="{{ product.selected_or_first_available_variant.id }}" data-price="{{ product.selected_or_first_available_variant.price }}"{% elsif product != blank %} data-bundle-item{% endif -%}
+        >
+          {%- liquid
+            assign item_title = product.title
+            if item_title == blank
+              assign item_title = 'onboarding.product_title' | t
+            endif
+          -%}
+          <label class="lbundle__check">
+            <input type="checkbox" data-bundle-check {% if block.settings.preselected %}checked{% endif %} {% if product == blank %}disabled{% endif %} aria-label="{{ 'sections.bundle.include' | t: title: item_title }}">
+          </label>
+          {%- if product != blank -%}
+            {% render 'product-card', product: product, show_badges: false, show_variants: false, show_actions: false %}
+            {%- if product.variants.size > 1 -%}
+              <label class="pcard-select lbundle__variant">
+                <span class="sr-only">{{ 'sections.bundle.variant' | t }}</span>
+                <select data-bundle-variant aria-label="{{ 'sections.bundle.variant' | t }}">
+                  {%- for v in product.variants -%}
+                    {%- if v.available -%}
+                      <option value="{{ v.id }}" data-price="{{ v.price }}">{{ v.title | escape }} — {{ v.price | money }}</option>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </select>
+              </label>
+            {%- endif -%}
+          {%- else -%}
+            <article class="pcard">
+              <div class="pcard-media">{{ 'product-1' | placeholder_svg_tag }}</div>
+              <div class="pcard-body">
+                <span class="pcard-title">{{ 'onboarding.product_title' | t }}</span>
+                <span class="pcard-price">{{ 9900 | money }}</span>
+              </div>
+            </article>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <div class="lbundle__bar">
+      <div class="lbundle__totals">
+        <span class="lbundle__totals-label">{{ 'sections.bundle.total' | t }} (<span data-bundle-count>0</span>)</span>
+        <span class="lbundle__total" data-bundle-total>—</span>
+        <s class="lbundle__compare" data-bundle-compare hidden></s>
+        {%- if section.settings.discount_pct > 0 -%}
+          <span class="lbundle__save">−{{ section.settings.discount_pct }}%</span>
+        {%- endif -%}
+      </div>
+      <button class="btn btn--brass" type="button" data-bundle-atc {% if real_blocks == 0 %}disabled{% endif %}>
+        <span>{{ section.settings.button_label }}</span>
+      </button>
+    </div>
+    {%- if section.settings.discount_note != blank -%}
+      <p class="lbundle__note">{{ section.settings.discount_note }}</p>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ritual (bundle)",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ Ritual · Piezas que conversan" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Componer" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "el ritual." },
+    { "type": "textarea", "id": "intro", "label": "Introducción", "default": "Piezas pensadas para convivir. Elige las que entren en tu casa y añádelas a la cesta en un solo gesto." },
+    { "type": "range", "id": "discount_pct", "label": "Descuento mostrado (%)", "min": 0, "max": 30, "step": 1, "default": 0, "info": "Solo visual: crea el descuento automático equivalente en Admin → Descuentos para que se aplique en el checkout." },
+    { "type": "text", "id": "button_label", "label": "Botón", "default": "Añadir el ritual a la cesta" },
+    { "type": "text", "id": "discount_note", "label": "Nota bajo el total" }
+  ],
+  "blocks": [
+    {
+      "type": "product",
+      "name": "Pieza",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Producto" },
+        { "type": "checkbox", "id": "preselected", "label": "Preseleccionada", "default": true }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ritual (bundle)",
+      "blocks": [
+        { "type": "product" },
+        { "type": "product" },
+        { "type": "product" }
+      ]
+    }
+  ]
+}
+{% endschema %}

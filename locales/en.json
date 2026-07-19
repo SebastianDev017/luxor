@@ -1,0 +1,304 @@
+{
+  "general": {
+    "meta": {
+      "tags": "Tagged \"{{ tags }}\"",
+      "page": "Page {{ page }}"
+    },
+    "brand": {
+      "byline": "House of Objects"
+    },
+    "accessibility": {
+      "home": "home",
+      "nav": "Sections",
+      "footer_nav": "Footer",
+      "close": "Close",
+      "next": "Next",
+      "previous": "Previous"
+    },
+    "pagination": {
+      "previous": "Previous",
+      "next": "Next",
+      "page": "Page {{ number }}"
+    },
+    "search": {
+      "search": "Search",
+      "placeholder": "Search the house",
+      "no_results": "Nothing in the register for \"{{ terms }}\". Try another word.",
+      "results_with_count": {
+        "one": "{{ count }} result for \"{{ terms }}\"",
+        "other": "{{ count }} results for \"{{ terms }}\""
+      }
+    },
+    "social": {
+      "share": "Share"
+    },
+    "password_page": {
+      "opening_soon": "The house opens soon",
+      "login_form_heading": "Enter with password",
+      "login_form_password_label": "Password",
+      "login_form_submit": "Enter",
+      "admin_link_html": "Are you the store owner? <a href=\"/admin\">Log in here</a>"
+    }
+  },
+  "accessibility": {
+    "skip_to_content": "Skip to content",
+    "unit_price_separator": "per",
+    "total_reviews": "total reviews",
+    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
+    "close": "Close",
+    "previous": "Previous",
+    "next": "Next",
+    "go_to_page": "Go to page"
+  },
+  "sections": {
+    "header": {
+      "materials": "Materials",
+      "collection": "Collection",
+      "configurator": "Configurator",
+      "method": "Method",
+      "studio": "Studio",
+      "cta": "Commission",
+      "cart": "Cart",
+      "account": "Account"
+    },
+    "manifesto": {
+      "aria": "Manifesto"
+    },
+    "materials": {
+      "texture_alt": "Macro texture of {{ name }}",
+      "tablist": "Materials"
+    },
+    "lookbook": {
+      "from_price": "from"
+    },
+    "process": {
+      "image_alt": "A turner's hands shaping an alabaster vessel on the lathe, stone dust in the light"
+    },
+    "studio": {
+      "image_alt": "Mediterranean interior at dusk with an alabaster lamp on a travertine table"
+    },
+    "configurator": {
+      "canvas_aria": "Three-dimensional view of the piece. Drag to rotate.",
+      "drag_hint": "Drag to rotate the piece",
+      "material": "Material",
+      "finish": "Finish",
+      "size": "Size",
+      "confirm": "Commission recorded",
+      "soldout": "Sold out",
+      "view_product": "View the full piece"
+    },
+    "cart": {
+      "title": "Cart",
+      "empty": "The cart is empty.",
+      "continue": "View the collection",
+      "subtotal": "Subtotal",
+      "checkout": "Place the commission",
+      "remove": "Remove",
+      "quantity": "Quantity",
+      "note_label": "Note for the atelier",
+      "taxes_shipping": "Taxes and shipping are calculated at checkout.",
+      "update": "Update"
+    },
+    "collection_template": {
+      "empty": "There are no pieces in this collection yet.",
+      "filter": "Filter",
+      "sort": "Sort",
+      "products_count": {
+        "one": "{{ count }} piece",
+        "other": "{{ count }} pieces"
+      }
+    },
+    "product": {
+      "add_to_cart": "Commission this piece",
+      "sold_out": "Sold out",
+      "unavailable": "Unavailable",
+      "quantity": "Quantity",
+      "vendor": "House",
+      "sku": "Reference",
+      "description": "The piece",
+      "view_details": "View the piece",
+      "from_price": "from",
+      "regular_price": "Price",
+      "shipping_note": "Each piece is made to order, numbered and signed in the atelier."
+    },
+    "blog": {
+      "read_more": "Continue reading",
+      "by_author": "by {{ author }}",
+      "comments": {
+        "one": "{{ count }} comment",
+        "other": "{{ count }} comments"
+      }
+    },
+    "list_collections": {
+      "title": "Collections"
+    },
+    "page_404": {
+      "title": "This room does not exist",
+      "subtext": "The piece you seek is not in the house register.",
+      "back_home": "Return home"
+    },
+    "bundle": {
+      "include": "Include {{ title }} in the ritual",
+      "variant": "Variant",
+      "total": "Ritual total"
+    }
+  },
+  "templates": {
+    "contact": {
+      "form": {
+        "name": "Name",
+        "email": "Email",
+        "message": "Message",
+        "send": "Send",
+        "post_success": "Thank you for writing to the house. We reply within 48 hours."
+      }
+    }
+  },
+  "customer": {
+    "account": {
+      "title": "Account",
+      "details": "Details",
+      "view_addresses": "View addresses",
+      "return": "Return to account"
+    },
+    "account_fallback": "Account",
+    "activate_account": {
+      "title": "Activate account",
+      "subtext": "Create your password to activate the account.",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Activate",
+      "cancel": "Decline invitation"
+    },
+    "addresses": {
+      "title": "Addresses",
+      "default": "Default",
+      "add_new": "Add address",
+      "edit_address": "Edit address",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "company": "Company",
+      "address1": "Address 1",
+      "address2": "Address 2",
+      "city": "City",
+      "country": "Country/region",
+      "province": "Province",
+      "zip": "Postal code",
+      "phone": "Phone",
+      "set_default": "Set as default",
+      "add": "Save",
+      "update": "Update",
+      "cancel": "Cancel",
+      "edit": "Edit",
+      "delete": "Delete",
+      "delete_confirm": "Are you sure you wish to delete this address?"
+    },
+    "log_in": "Log in",
+    "log_out": "Log out",
+    "login_page": {
+      "title": "Log in",
+      "email": "Email",
+      "password": "Password",
+      "forgot_password": "Forgot your password?",
+      "sign_in": "Enter",
+      "guest_title": "Continue as guest",
+      "guest_continue": "Continue",
+      "create_account": "Create account"
+    },
+    "orders": {
+      "title": "Commission history",
+      "order_number": "Commission",
+      "date": "Date",
+      "payment_status": "Payment status",
+      "fulfillment_status": "Fulfillment status",
+      "total": "Total",
+      "none": "You have not placed a commission yet."
+    },
+    "order": {
+      "title": "Commission {{ name }}",
+      "date_html": "Placed on {{ date }}",
+      "cancelled_html": "Commission cancelled on {{ date }}",
+      "cancelled_reason": "Reason: {{ reason }}",
+      "billing_address": "Billing address",
+      "payment_status": "Payment status",
+      "shipping_address": "Shipping address",
+      "fulfillment_status": "Fulfillment status",
+      "discount": "Discount",
+      "shipping": "Shipping",
+      "tax": "Taxes",
+      "product": "Piece",
+      "sku": "Reference",
+      "price": "Price",
+      "quantity": "Quantity",
+      "total": "Total",
+      "subtotal": "Subtotal"
+    },
+    "recover_password": {
+      "title": "Recover password",
+      "email": "Email",
+      "subtext": "We will send you an email to reset it.",
+      "submit": "Send",
+      "success": "We have sent you an email with instructions."
+    },
+    "register": {
+      "title": "Create account",
+      "first_name": "First name",
+      "last_name": "Last name",
+      "email": "Email",
+      "password": "Password",
+      "submit": "Create"
+    },
+    "reset_password": {
+      "title": "Reset password",
+      "subtext": "Enter a new password",
+      "password": "Password",
+      "password_confirm": "Confirm password",
+      "submit": "Reset"
+    }
+  },
+  "gift_cards": {
+    "issued": {
+      "title": "{{ shop }} gift card for {{ value }}",
+      "subtext": "Your gift card",
+      "disabled": "Disabled",
+      "expired": "Expired on {{ expiry }}",
+      "active": "Expires on {{ expiry }}",
+      "redeem": "Use this code at checkout for your commission",
+      "shop_link": "Visit the store",
+      "print": "Print"
+    }
+  },
+  "products": {
+    "card": {
+      "sale": "Sale",
+      "new": "New",
+      "hot": "Coveted",
+      "sold_out": "Sold out",
+      "add_to_cart": "Add to cart",
+      "buy_now": "Buy now",
+      "quick_add": "Quick add",
+      "quick_view": "Quick view of {{ title }}"
+    },
+    "quick_view": {
+      "title": "Quick view",
+      "view_full": "View the full piece"
+    }
+  },
+  "cart": {
+    "drawer": {
+      "title": "Cart",
+      "empty": "The cart is empty. The pieces are waiting.",
+      "continue": "Discover the collection",
+      "subtotal": "Subtotal",
+      "taxes_note": "Taxes included. Shipping calculated at checkout.",
+      "view_cart": "View cart",
+      "checkout": "Checkout",
+      "remove": "Remove",
+      "increase": "Increase quantity",
+      "decrease": "Decrease quantity"
+    }
+  },
+  "onboarding": {
+    "product_title": "Example piece"
+  }
+}

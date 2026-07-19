@@ -4,6 +4,33 @@
   if product != blank
     assign demo = false
   endif
+
+  comment
+    Modelo 3D: primero la media 3D del producto (GLB subido en Admin → Producto),
+    después la URL manual del ajuste. Sin modelo y con producto → modo spotlight
+    (ficha estática con toda la info del producto, sin canvas).
+  endcomment
+  assign glb_url = section.settings.glb_url | strip
+  if product != blank
+    for media in product.media
+      if media.media_type == 'model'
+        for source in media.sources
+          if source.format == 'glb'
+            assign glb_url = source.url
+            break
+          endif
+        endfor
+        if glb_url != blank
+          break
+        endif
+      endif
+    endfor
+  endif
+
+  assign spotlight = false
+  if demo == false and glb_url == blank
+    assign spotlight = true
+  endif
 -%}
 <section class="config" data-section="config" id="configurador">
   <header class="section-head">
@@ -14,6 +41,8 @@
     <script type="application/json" data-config-data>
       {
         "demo": {{ demo }},
+        "spotlight": {{ spotlight }},
+        "glb": {% if glb_url != blank %}{{ glb_url | json }}{% else %}null{% endif %},
         "leadDefault": {{ section.settings.lead_default | json }},
         "leadL": {{ section.settings.lead_large | json }},
         "materials": [
@@ -79,11 +108,13 @@
     </script>
 
     <div class="config__stage">
-      <canvas class="config__canvas" data-config-canvas aria-label="{{ 'sections.configurator.canvas_aria' | t }}"></canvas>
-      <p class="config__hint" data-config-hint><span class="config__hint-icon">{% render 'luxor-icon', icon: 'ui-drag' %}</span>{{ 'sections.configurator.drag_hint' | t }}</p>
-      <div class="config__ruler" data-config-ruler aria-hidden="true"></div>
-      <figure class="config__fallback" data-config-fallback hidden>
-        {%- if section.settings.fallback_image -%}
+      <canvas class="config__canvas" data-config-canvas aria-label="{{ 'sections.configurator.canvas_aria' | t }}" {% if spotlight %}hidden{% endif %}></canvas>
+      <p class="config__hint" data-config-hint {% if spotlight %}hidden{% endif %}><span class="config__hint-icon">{% render 'luxor-icon', icon: 'ui-drag' %}</span>{{ 'sections.configurator.drag_hint' | t }}</p>
+      <div class="config__ruler" data-config-ruler aria-hidden="true" {% if spotlight %}hidden{% endif %}></div>
+      <figure class="config__fallback" data-config-fallback {% unless spotlight %}hidden{% endunless %}>
+        {%- if spotlight and product.featured_image -%}
+          {{ product.featured_image | image_url: width: 960 | image_tag: loading: 'lazy', alt: product.featured_image.alt | default: product.title }}
+        {%- elsif section.settings.fallback_image -%}
           {{ section.settings.fallback_image | image_url: width: 960 | image_tag: loading: 'lazy', alt: section.settings.fallback_alt }}
         {%- else -%}
           <img src="{{ 'piece-anfora.webp' | asset_url }}" alt="{{ section.settings.fallback_alt }}" loading="lazy" width="640" height="1080">
@@ -96,6 +127,16 @@
       data-config-form
       {% if demo %}action="#configurador"{% else %}method="post" action="{{ routes.cart_add_url }}"{% endif %}
     >
+      {%- unless demo -%}
+        <div class="config__pinfo">
+          <p class="config__pinfo-kind">{{ product.type | default: product.vendor }}</p>
+          <h3 class="config__pinfo-title">{{ product.title | escape }}</h3>
+          {%- if spotlight and product.description != blank -%}
+            <p class="config__pinfo-desc">{{ product.description | strip_html | truncate: 200 }}</p>
+          {%- endif -%}
+          <a class="config__pinfo-link" href="{{ product.url }}">{{ 'sections.configurator.view_product' | t }} →</a>
+        </div>
+      {%- endunless -%}
       <fieldset class="config__group" data-group="material">
         <legend class="config__legend">{{ 'sections.configurator.material' | t }}</legend>
         <div class="config__swatches" data-swatches aria-label="{{ 'sections.configurator.material' | t }}"></div>
@@ -123,6 +164,11 @@
         >
           {{- section.settings.buy_label -}}
         </button>
+        {%- unless demo -%}
+          <button class="btn btn--ghost config__buynow" type="button" data-config-buynow>
+            <span>{{ 'products.card.buy_now' | t }}</span>
+          </button>
+        {%- endunless -%}
         <p class="config__fine">{{ section.settings.fine_print }}</p>
       </div>
     </form>
@@ -156,9 +202,10 @@
 
 {% schema %}
 {
-  "name": "Configurador 3D",
+  "name": "Producto destacado 3D",
   "settings": [
-    { "type": "product", "id": "product", "label": "Producto", "info": "Producto con 3 opciones en este orden: Material, Acabado, Tamaño. Sin producto, la sección funciona en modo demo con precios calculados." },
+    { "type": "product", "id": "product", "label": "Producto", "info": "Sin producto: demo 3D con precios calculados. Con producto + modelo GLB (media 3D del producto o URL abajo): visor 3D real. Con producto sin GLB: ficha spotlight con toda su info." },
+    { "type": "text", "id": "glb_url", "label": "URL del modelo GLB (opcional)", "info": "Sube el .glb en Admin → Contenido → Archivos y pega aquí la URL. Se ignora si el producto ya tiene media 3D." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ 04 · Configurador" },
     { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "La Ánfora N.01," },
     { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "en tu materia." },
@@ -198,7 +245,7 @@
   "max_blocks": 6,
   "presets": [
     {
-      "name": "Configurador 3D",
+      "name": "Producto destacado 3D",
       "blocks": [
         { "type": "material", "settings": { "name": "Travertino", "tex_key": "travertino", "base_price": 1900 } },
         { "type": "material", "settings": { "name": "Alabastro", "tex_key": "alabastro", "base_price": 2600 } },

@@ -2,6 +2,8 @@
   <figure class="hero__media" aria-hidden="true">
     {%- if section.settings.image -%}
       {{ section.settings.image | image_url: width: 1920 | image_tag: sizes: '100vw', widths: '960, 1440, 1920', fetchpriority: 'high', alt: '' }}
+    {%- elsif section.settings.image_asset != blank -%}
+      <img src="{{ section.settings.image_asset | asset_url }}" sizes="100vw" alt="" width="1920" height="1080" fetchpriority="high">
     {%- else -%}
       <img
         src="{{ 'hero.webp' | asset_url }}"
@@ -45,6 +47,7 @@
   "name": "Hero cinematográfico",
   "settings": [
     { "type": "image_picker", "id": "image", "label": "Imagen de fondo", "info": "Sin imagen se usa la fotografía LUXOR de demo." },
+    { "type": "text", "id": "image_asset", "label": "Asset de imagen (avanzado)", "info": "Nombre de un archivo de assets del tema (p. ej. bojola-hero-bottles.webp). Solo se usa si no hay imagen elegida arriba." },
     { "type": "text", "id": "eyebrow_left", "label": "Eyebrow izquierda", "default": "Casa de Objetos" },
     { "type": "text", "id": "eyebrow_right", "label": "Eyebrow derecha", "default": "Col. I — Origen" },
     { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "La materia" },

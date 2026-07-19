@@ -1,0 +1,31 @@
+{%- comment -%}
+  quick-view — modal de vista rápida de producto.
+  Shell único renderizado desde layout/theme.liquid; el contenido se pinta
+  en cliente desde /products/{handle}.js (luxor-shop.js).
+{%- endcomment -%}
+<dialog class="qview" data-quick-view aria-label="{{ 'products.quick_view.title' | t }}">
+  <button class="qview__close" type="button" data-qview-close aria-label="{{ 'accessibility.close' | t }}">
+    <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.2"/></svg>
+  </button>
+  <div class="qview__loading" data-qview-loading hidden>
+    <span class="qview__spinner" aria-hidden="true"></span>
+  </div>
+  <div class="qview__body" data-qview-body>
+    <div class="qview__gallery" data-qview-gallery></div>
+    <div class="qview__info">
+      <p class="qview__kind" data-qview-kind></p>
+      <h2 class="qview__title" data-qview-title></h2>
+      <p class="qview__price">
+        <span data-qview-price></span>
+        <s data-qview-compare hidden></s>
+      </p>
+      <div class="qview__options" data-qview-options></div>
+      <div class="qview__actions">
+        <button class="btn btn--ghost" type="button" data-qview-atc><span>{{ 'products.card.add_to_cart' | t }}</span></button>
+        <button class="btn btn--brass" type="button" data-qview-buy><span>{{ 'products.card.buy_now' | t }}</span></button>
+      </div>
+      <p class="qview__desc" data-qview-desc></p>
+      <a class="qview__link" data-qview-link href="#">{{ 'products.quick_view.view_full' | t }} →</a>
+    </div>
+  </div>
+</dialog>

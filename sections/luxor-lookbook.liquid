@@ -35,6 +35,8 @@
           <span class="piece__media">
             {%- if block.settings.image -%}
               {{ block.settings.image | image_url: width: 960 | image_tag: loading: 'lazy', alt: block.settings.title }}
+            {%- elsif block.settings.image_asset != blank -%}
+              <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.title }}, {{ block.settings.type | downcase }}" loading="lazy" width="640" height="1080">
             {%- else -%}
               <img src="{{ 'piece-' | append: slot | append: '.webp' | asset_url }}" alt="{{ block.settings.title }}, {{ block.settings.type | downcase }}" loading="lazy" width="640" height="1080">
             {%- endif -%}
@@ -82,6 +84,7 @@
           "default": "anfora"
         },
         { "type": "image_picker", "id": "image", "label": "Imagen", "info": "Sin imagen se usa la fotografía LUXOR del hueco elegido." },
+        { "type": "text", "id": "image_asset", "label": "Asset de imagen (avanzado)", "info": "Nombre de archivo en assets del tema. Solo si no hay imagen elegida." },
         { "type": "text", "id": "num", "label": "Numeración", "default": "N.01" },
         { "type": "text", "id": "title", "label": "Título", "default": "Ánfora" },
         { "type": "text", "id": "type", "label": "Tipo", "default": "Lámpara escultórica" },

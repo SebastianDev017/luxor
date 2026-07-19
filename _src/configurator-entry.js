@@ -7,6 +7,7 @@
 
 import * as THREE from 'three'
 import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js'
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
 
 const REDUCED = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 const gsap = window.gsap
@@ -78,7 +79,8 @@ function initSection(root) {
     const mat = materials.find((m) => m.key === state.material)
     const fin = finishes.find((f) => f.key === state.finish)
     const siz = sizes.find((s) => s.key === state.size)
-    return variants.find((v) => v.option1 === mat?.name && v.option2 === fin?.name && v.option3 === siz?.name)
+    const exact = variants.find((v) => v.option1 === mat?.name && v.option2 === fin?.name && v.option3 === siz?.name)
+    return exact || (variants.length === 1 ? variants[0] : undefined)
   }
 
   // ————— UI de controles (vive aunque no haya WebGL) —————
@@ -211,12 +213,52 @@ function initSection(root) {
   updateSummary()
   wireControls()
 
+  // oculta fieldsets sin valores (productos con menos de 3 opciones)
+  ;[
+    [swatchHost, materials],
+    [finHost, finishes],
+    [sizeHost, sizes],
+  ].forEach(([host, list]) => {
+    const grp = host && host.closest('.config__group')
+    if (grp) grp.hidden = list.length === 0
+  })
+
+  // comprar ahora (modo producto real): añade la variante y va directo al checkout
+  const buyNow = root.querySelector('[data-config-buynow]')
+  if (buyNow)
+    buyNow.addEventListener('click', () => {
+      const v = findVariant()
+      if (!v || !v.id || v.available === false) return
+      buyNow.disabled = true
+      fetch('/cart/add.js', {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: v.id, quantity: 1 }] }),
+      })
+        .then((r) => {
+          if (r.ok) location.href = '/checkout'
+          else buyNow.disabled = false
+        })
+        .catch(() => {
+          buyNow.disabled = false
+        })
+    })
+
   function showFallback() {
     canvas.hidden = true
     const fb = root.querySelector('[data-config-fallback]')
     const hint = root.querySelector('[data-config-hint]')
     if (fb) fb.hidden = false
     if (hint) hint.hidden = true
+  }
+
+  // modo spotlight: producto sin modelo GLB → ficha estática (sin 3D)
+  if (data.spotlight) {
+    showFallback()
+    const ruler = root.querySelector('[data-config-ruler]')
+    if (ruler) ruler.hidden = true
+    return
   }
 
   // ————— 3D —————
@@ -255,26 +297,50 @@ function initSection(root) {
   inner.position.set(0, 0.82, 0)
   scene.add(inner)
 
-  const profile = new THREE.SplineCurve([
-    new THREE.Vector2(0.005, 0), new THREE.Vector2(0.15, 0), new THREE.Vector2(0.18, 0.03),
-    new THREE.Vector2(0.14, 0.1), new THREE.Vector2(0.17, 0.22), new THREE.Vector2(0.27, 0.42),
-    new THREE.Vector2(0.325, 0.62), new THREE.Vector2(0.33, 0.78), new THREE.Vector2(0.28, 0.95),
-    new THREE.Vector2(0.19, 1.08), new THREE.Vector2(0.125, 1.18), new THREE.Vector2(0.115, 1.28),
-    new THREE.Vector2(0.155, 1.36), new THREE.Vector2(0.19, 1.41), new THREE.Vector2(0.005, 1.42),
-  ])
-  const geometry = new THREE.LatheGeometry(profile.getPoints(72), 112)
-  const bodyMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.6, metalness: 0 })
-  const body = new THREE.Mesh(geometry, bodyMat)
-  const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(0.155, 0.012, 24, 96),
-    new THREE.MeshPhysicalMaterial({ color: 0xc9a468, metalness: 1, roughness: 0.25 })
-  )
-  ring.rotation.x = Math.PI / 2
-  ring.position.y = 1.335
   const group = new THREE.Group()
-  group.add(body, ring)
   group.position.y = -0.72
   scene.add(group)
+
+  const bodyMat = new THREE.MeshPhysicalMaterial({ color: 0xffffff, roughness: 0.6, metalness: 0 })
+  const glbMode = !!data.glb
+
+  if (glbMode) {
+    // Featured Product 3D: carga el modelo GLB del producto (media 3D de Shopify
+    // o URL de Archivos) y lo normaliza al encuadre de la Ánfora (alto 1.42).
+    new GLTFLoader()
+      .loadAsync(data.glb)
+      .then((gltf) => {
+        const model = gltf.scene
+        const box = new THREE.Box3().setFromObject(model)
+        const dims = box.getSize(new THREE.Vector3())
+        const scale = 1.42 / Math.max(dims.y, 0.0001)
+        model.scale.setScalar(scale)
+        box.setFromObject(model)
+        const center = box.getCenter(new THREE.Vector3())
+        model.position.x -= center.x
+        model.position.z -= center.z
+        model.position.y -= box.min.y
+        group.add(model)
+      })
+      .catch(() => showFallback())
+  } else {
+    const profile = new THREE.SplineCurve([
+      new THREE.Vector2(0.005, 0), new THREE.Vector2(0.15, 0), new THREE.Vector2(0.18, 0.03),
+      new THREE.Vector2(0.14, 0.1), new THREE.Vector2(0.17, 0.22), new THREE.Vector2(0.27, 0.42),
+      new THREE.Vector2(0.325, 0.62), new THREE.Vector2(0.33, 0.78), new THREE.Vector2(0.28, 0.95),
+      new THREE.Vector2(0.19, 1.08), new THREE.Vector2(0.125, 1.18), new THREE.Vector2(0.115, 1.28),
+      new THREE.Vector2(0.155, 1.36), new THREE.Vector2(0.19, 1.41), new THREE.Vector2(0.005, 1.42),
+    ])
+    const geometry = new THREE.LatheGeometry(profile.getPoints(72), 112)
+    const body = new THREE.Mesh(geometry, bodyMat)
+    const ring = new THREE.Mesh(
+      new THREE.TorusGeometry(0.155, 0.012, 24, 96),
+      new THREE.MeshPhysicalMaterial({ color: 0xc9a468, metalness: 1, roughness: 0.25 })
+    )
+    ring.rotation.x = Math.PI / 2
+    ring.position.y = 1.335
+    group.add(body, ring)
+  }
 
   const loader = new THREE.TextureLoader()
   const cache = new Map()
@@ -302,6 +368,7 @@ function initSection(root) {
   }
 
   async function applyMaterial() {
+    if (glbMode) return // el GLB trae sus propios materiales; los swatches siguen eligiendo variante
     const requested = state.material
     let tex
     try {

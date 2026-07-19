@@ -44,7 +44,11 @@
     "skip_to_content": "Saltar al contenido",
     "unit_price_separator": "por",
     "total_reviews": "reseñas en total",
-    "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas"
+    "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas",
+    "close": "Cerrar",
+    "previous": "Anterior",
+    "next": "Siguiente",
+    "go_to_page": "Ir a la página"
   },
   "sections": {
     "header": {
@@ -80,7 +84,8 @@
       "finish": "Acabado",
       "size": "Tamaño",
       "confirm": "Encargo registrado",
-      "soldout": "Agotado"
+      "soldout": "Agotado",
+      "view_product": "Ver la pieza completa"
     },
     "cart": {
       "title": "La cesta",
@@ -131,6 +136,11 @@
       "title": "Esta sala no existe",
       "subtext": "La pieza que buscas no está en el registro de la casa.",
       "back_home": "Volver al inicio"
+    },
+    "bundle": {
+      "include": "Incluir {{ title }} en el ritual",
+      "variant": "Variante",
+      "total": "Total del ritual"
     }
   },
   "templates": {
@@ -257,5 +267,38 @@
       "shop_link": "Visitar la tienda",
       "print": "Imprimir"
     }
+  },
+  "products": {
+    "card": {
+      "sale": "Oferta",
+      "new": "Nuevo",
+      "hot": "Deseado",
+      "sold_out": "Agotado",
+      "add_to_cart": "Añadir a la cesta",
+      "buy_now": "Comprar ahora",
+      "quick_add": "Añadir rápido",
+      "quick_view": "Vista rápida de {{ title }}"
+    },
+    "quick_view": {
+      "title": "Vista rápida",
+      "view_full": "Ver la pieza completa"
+    }
+  },
+  "cart": {
+    "drawer": {
+      "title": "La cesta",
+      "empty": "La cesta está vacía. Las piezas esperan.",
+      "continue": "Descubrir la colección",
+      "subtotal": "Subtotal",
+      "taxes_note": "Impuestos incluidos. Envío calculado en el checkout.",
+      "view_cart": "Ver cesta",
+      "checkout": "Finalizar compra",
+      "remove": "Eliminar",
+      "increase": "Aumentar cantidad",
+      "decrease": "Reducir cantidad"
+    }
+  },
+  "onboarding": {
+    "product_title": "Pieza de ejemplo"
   }
 }

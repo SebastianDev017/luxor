@@ -12,39 +12,25 @@
     "hero": {
       "type": "luxor-hero",
       "settings": {
-        "eyebrow_left": "Casa de Objetos",
-        "eyebrow_right": "Col. I — Origen",
-        "title_line_1": "La materia",
-        "title_line_2": "recuerda.",
-        "subtitle": "Travertino, alabastro, latón y cedro. Cinco milenios de memoria, tallados en forma presente.",
-        "cta_primary_label": "Configurar la Ánfora N.01",
-        "cta_primary_link": "",
-        "cta_secondary_label": "Ver la colección",
-        "cta_secondary_link": "",
-        "scroll_hint": "La historia empieza en la cantera"
+        "image_asset": "bojola-hero-bottles.webp",
+        "eyebrow_left": "Studio Bojola",
+        "eyebrow_right": "Toscana · Dal 1983",
+        "title_line_1": "Shaped by hand,",
+        "title_line_2": "shaped by time.",
+        "subtitle": "Crystal and ceramic pieces born in a former barn in the Tuscan hills — where vision meets craftsmanship.",
+        "cta_primary_label": "Explore the Cristallo Collection",
+        "cta_primary_link": "/collections/crystal-vase",
+        "cta_secondary_label": "Visit the atelier",
+        "cta_secondary_link": "/pages/contact",
+        "scroll_hint": "The story begins in the hills"
       }
     },
     "manifesto": {
       "type": "luxor-manifesto",
       "blocks": {
-        "line1": {
-          "type": "line",
-          "settings": {
-            "text": "LUXOR trabaja cuatro materias con cinco milenios de memoria."
-          }
-        },
-        "line2": {
-          "type": "line",
-          "settings": {
-            "text": "Cada pieza nace de oficios heredados: canteros, torneros, fundidores."
-          }
-        },
-        "line3": {
-          "type": "line",
-          "settings": {
-            "text": "Objetos numerados, hechos a pedido, pensados para durar más que su dueño."
-          }
-        }
+        "line1": { "type": "line", "settings": { "text": "From a former barn in the Tuscan hills, Studio Bojola creates objects and spaces where vision meets craftsmanship." } },
+        "line2": { "type": "line", "settings": { "text": "Creative direction, product design and interiors — and a collection of crystal and ceramic pieces with a deep respect for artisanal know-how." } },
+        "line3": { "type": "line", "settings": { "text": "Each creation is shaped by hand, shaped by time, and shaped by the quiet beauty of imperfection." } }
       },
       "block_order": [
         "line1",
@@ -58,142 +44,40 @@
     "materials": {
       "type": "luxor-materials",
       "blocks": {
-        "travertino": {
-          "type": "material",
-          "settings": {
-            "map_node": "travertino",
-            "icon": "mat-travertino",
-            "name": "Travertino",
-            "origin": "Tivoli, Lacio",
-            "age": "80.000 años",
-            "memory": "Sedimento de aguas termales depositado capa a capa desde el Pleistoceno. Con esta piedra se levantó el Coliseo; sus poros son burbujas de un manantial extinto.",
-            "craft": "Cantería y corte a hilo diamantado"
-          }
-        },
-        "alabastro": {
-          "type": "material",
-          "settings": {
-            "map_node": "alabastro",
-            "icon": "mat-alabastro",
-            "name": "Alabastro",
-            "origin": "Volterra, Toscana",
-            "age": "5.000 años de oficio",
-            "memory": "La piedra de los vasos canopos y de las ventanas que iluminaban templos antes del vidrio. Es la única materia de la casa que deja pasar la luz.",
-            "craft": "Torneado en húmedo y pulido al agua"
-          }
-        },
-        "laton": {
-          "type": "material",
-          "settings": {
-            "map_node": "laton",
-            "icon": "mat-laton",
-            "name": "Latón",
-            "origin": "Anatolia y el Levante",
-            "age": "Edad del Bronce",
-            "memory": "La primera aleación deliberada del ser humano: cobre y zinc fundidos hasta dar un oro que se puede trabajar. Envejece hacia el bronce, nunca hacia el óxido.",
-            "craft": "Fundición a la cera perdida y cincelado"
-          }
-        },
-        "cedro": {
-          "type": "material",
-          "settings": {
-            "map_node": "cedro",
-            "icon": "mat-cedro",
-            "name": "Cedro",
-            "origin": "Cordillera del Atlas",
-            "age": "4.600 años navegando",
-            "memory": "La madera de las barcas solares de Keops, enterradas junto a la Gran Pirámide y aún intactas. Su resina perfuma siglos y repele el tiempo.",
-            "craft": "Ebanistería de vaciado y aceitado natural"
-          }
-        }
+        "cristallo": { "type": "material", "settings": { "map_node": "alabastro", "icon": "mat-alabastro", "name": "Cristallo", "origin": "Colle di Val d'Elsa, Toscana", "age": "The city of crystal", "memory": "A fusion of creativity and craftsmanship, created with a renowned Italian artisan company. Unique creations that become the focal point of the space they are placed in, capturing and reflecting light in a dance.", "craft": "Hand-engraving and cold carving" } },
+        "ceramica": { "type": "material", "settings": { "map_node": "travertino", "icon": "mat-travertino", "name": "Ceramica", "origin": "Montelupo, Toscana", "age": "Three generations", "memory": "The Natura Naturante collection is hand-modeled, born from reimagining the molds of a three-generation-old ceramics workshop in the heart of Tuscany.", "craft": "Hand-modeling and glazing" } },
+        "vetro": { "type": "material", "settings": { "map_node": "cedro", "icon": "mat-cedro", "name": "Vetro soffiato", "origin": "Murano, Venezia", "age": "Seven centuries of breath", "memory": "Two-piece vases born from the breath of the glassmaster — the oldest living tradition of the lagoon, carried into present form.", "craft": "Hand-blowing, a fiato" } },
+        "ottone": { "type": "material", "settings": { "map_node": "laton", "icon": "mat-laton", "name": "Ottone", "origin": "Anatolia — Bronze Age", "age": "The first alloy", "memory": "Brass and crystal meet in the Lumina jewelry collection. Humanity's first deliberate alloy ages toward bronze, never toward rust.", "craft": "Casting and hand-finishing" } }
       },
-      "block_order": [
-        "travertino",
-        "alabastro",
-        "laton",
-        "cedro"
-      ],
+      "block_order": ["cristallo", "ceramica", "vetro", "ottone"],
+      "settings": {}
+    },
+    "featured": {
+      "type": "luxor-featured-products",
       "settings": {
-        "eyebrow": "§ 02 · Carta de materias",
-        "title_line_1": "Cuatro orígenes,",
-        "title_line_2": "un atelier."
+        "eyebrow": "§ 03 · The Cristallo Collection",
+        "title_line_1": "Unique creations,",
+        "title_line_2": "in a dance of light.",
+        "intro": "A fusion of creativity and craftsmanship, created in collaboration with a renowned Italian artisan company.",
+        "collection": "crystal-vase",
+        "count": 4,
+        "columns": 4,
+        "show_badges": true,
+        "show_variants": true,
+        "show_actions": true,
+        "new_days": 45,
+        "link_label": "Explore all crystal"
       }
     },
     "lookbook": {
       "type": "luxor-lookbook",
       "blocks": {
-        "anfora": {
-          "type": "piece",
-          "settings": {
-            "slot": "anfora",
-            "num": "N.01",
-            "title": "Ánfora",
-            "type": "Lámpara escultórica",
-            "material": "Alabastro",
-            "price": "desde 1.400 €",
-            "link": ""
-          }
-        },
-        "estela": {
-          "type": "piece",
-          "settings": {
-            "slot": "estela",
-            "num": "N.02",
-            "title": "Estela",
-            "type": "Consola de pared",
-            "material": "Travertino",
-            "price": "desde 3.200 €",
-            "link": ""
-          }
-        },
-        "canopo": {
-          "type": "piece",
-          "settings": {
-            "slot": "canopo",
-            "num": "N.03",
-            "title": "Canopo",
-            "type": "Vaso contenedor",
-            "material": "Alabastro",
-            "price": "desde 980 €",
-            "link": ""
-          }
-        },
-        "obelisco": {
-          "type": "piece",
-          "settings": {
-            "slot": "obelisco",
-            "num": "N.04",
-            "title": "Obelisco",
-            "type": "Candelabro",
-            "material": "Latón",
-            "price": "desde 640 €",
-            "link": ""
-          }
-        },
-        "dintel": {
-          "type": "piece",
-          "settings": {
-            "slot": "dintel",
-            "num": "N.05",
-            "title": "Dintel",
-            "type": "Centro de mesa",
-            "material": "Travertino",
-            "price": "desde 1.150 €",
-            "link": ""
-          }
-        },
-        "monolito": {
-          "type": "piece",
-          "settings": {
-            "slot": "monolito",
-            "num": "N.06",
-            "title": "Monolito",
-            "type": "Objeto de escritorio",
-            "material": "Cedro",
-            "price": "desde 420 €",
-            "link": ""
-          }
-        }
+        "anfora": { "type": "piece", "settings": { "slot": "anfora", "image_asset": "bojola-card-vases.webp", "num": "N.01", "title": "Crystal Vases", "type": "Hand-blown crystal", "material": "Cristallo", "price": "from €480", "link": "/collections/crystal-vase" } },
+        "estela": { "type": "piece", "settings": { "slot": "estela", "image_asset": "bojola-card-lighting.webp", "num": "N.02", "title": "Crystal Lighting", "type": "Table lamps", "material": "Cristallo", "price": "from €650", "link": "/collections/collezione-lampade-di-cristallo" } },
+        "canopo": { "type": "piece", "settings": { "slot": "canopo", "image_asset": "bojola-card-perfume.webp", "num": "N.03", "title": "Perfume Bottles", "type": "Sculture olfattive", "material": "Cristallo", "price": "from €390", "link": "/collections/sculture-olfattive" } },
+        "obelisco": { "type": "piece", "settings": { "slot": "obelisco", "image_asset": "bojola-barware-2.webp", "num": "N.04", "title": "Barware", "type": "Hand-engraved", "material": "Cristallo", "price": "from €120", "link": "/collections/barware" } },
+        "dintel": { "type": "piece", "settings": { "slot": "dintel", "image_asset": "bojola-ceramic-2.webp", "num": "N.05", "title": "Natura Naturante", "type": "Ceramics", "material": "Ceramica", "price": "from €180", "link": "/collections/ceramic-1" } },
+        "monolito": { "type": "piece", "settings": { "slot": "monolito", "image_asset": "bojola-look-1.webp", "num": "N.06", "title": "Crystal Boxes", "type": "Objects", "material": "Cristallo", "price": "from €240", "link": "/collections/crystal-box" } }
       },
       "block_order": [
         "anfora",
@@ -247,136 +131,108 @@
           }
         }
       },
-      "block_order": [
-        "travertino",
-        "alabastro",
-        "laton",
-        "cedro"
-      ],
+      "block_order": ["travertino", "alabastro", "laton", "cedro"],
       "settings": {
-        "product": "",
-        "eyebrow": "§ 04 · Configurador",
-        "title_line_1": "La Ánfora N.01,",
-        "title_line_2": "en tu materia.",
-        "lead_default": "Entrega en 12 semanas",
-        "lead_large": "Entrega en 16 semanas",
-        "buy_label": "Encargar esta pieza",
-        "fine_print": "Depósito del 30% al encargar. Cada pieza se numera y firma en el atelier de Barcelona.",
-        "fallback_alt": "Ánfora N.01 en alabastro, encendida",
-        "demo_finishes": "Mate,Pulido",
-        "demo_sizes": "Sobremesa · 28 cm|Media · 42 cm|Suelo · 60 cm"
+        "eyebrow": "§ 05 · Featured Product 3D",
+        "title_line_1": "L'Anfora,",
+        "title_line_2": "in your material.",
+        "buy_label": "Commission this piece",
+        "fine_print": "Interactive 3D demo. Assign a product with a GLB model to sell the real piece — deposit and numbering handled at the atelier."
+      }
+    },
+    "carousel": {
+      "type": "luxor-product-carousel",
+      "settings": {
+        "eyebrow": "§ 06 · The Cristallo Barware",
+        "title_line_1": "Objects that translate",
+        "title_line_2": "gesture into matter.",
+        "collection": "barware",
+        "count": 10,
+        "per_view": 4,
+        "show_arrows": true,
+        "show_dots": true,
+        "show_badges": true,
+        "show_variants": false,
+        "show_actions": false
+      }
+    },
+    "bundle": {
+      "type": "luxor-bundle",
+      "blocks": {
+        "b1": { "type": "product", "settings": { "product": "grecale-hand-engraved-crystal-carafe", "preselected": true } },
+        "b2": { "type": "product", "settings": { "product": "zefiro-glass-clear", "preselected": true } },
+        "b3": { "type": "product", "settings": { "product": "libeccio-glass-amber", "preselected": true } }
+      },
+      "block_order": ["b1", "b2", "b3"],
+      "settings": {
+        "eyebrow": "§ 07 · The bar ritual",
+        "title_line_1": "Compose",
+        "title_line_2": "the ritual.",
+        "intro": "A hand-engraved collection that gives form to touch. Choose the pieces that belong on your bar and add them in a single gesture.",
+        "discount_pct": 10,
+        "button_label": "Add the ritual to cart",
+        "discount_note": "Bundle price shown with the ritual discount. Create the matching automatic discount in Admin so it applies at checkout."
       }
     },
     "process": {
       "type": "luxor-process",
       "blocks": {
-        "s1": {
-          "type": "step",
-          "settings": {
-            "icon": "proc-cantera",
-            "title": "Extracción",
-            "text": "El bloque se elige a pie de cantera, leyendo la veta antes de cortar."
-          }
-        },
-        "s2": {
-          "type": "step",
-          "settings": {
-            "icon": "proc-torno",
-            "title": "Torneado",
-            "text": "La forma nace en el torno, en húmedo, sin moldes ni copias."
-          }
-        },
-        "s3": {
-          "type": "step",
-          "settings": {
-            "icon": "proc-pulido",
-            "title": "Pulido",
-            "text": "Al agua y a mano, hasta que la materia decide su brillo justo."
-          }
-        },
-        "s4": {
-          "type": "step",
-          "settings": {
-            "icon": "proc-ensamblaje",
-            "title": "Ensamblaje",
-            "text": "Latón torneado, cableado textil y cedro aceitado, unidos sin adhesivos vistos."
-          }
-        },
-        "s5": {
-          "type": "step",
-          "settings": {
-            "icon": "proc-numerado",
-            "title": "Numerado",
-            "text": "Cada pieza se talla con su número de serie y entra en el registro de la casa."
-          }
-        }
+        "s1": { "type": "step", "settings": { "icon": "proc-cantera", "title": "Disegno", "text": "Every piece begins as a dialogue between material and vision, drawn at the atelier." } },
+        "s2": { "type": "step", "settings": { "icon": "proc-torno", "title": "Soffiatura", "text": "Blown by breath and shaped by hand — no molds repeated, no two pieces alike." } },
+        "s3": { "type": "step", "settings": { "icon": "proc-pulido", "title": "Molatura", "text": "Hand-engraving gives form to touch: objects that translate gesture into matter." } },
+        "s4": { "type": "step", "settings": { "icon": "proc-ensamblaje", "title": "Smaltatura", "text": "Ceramics glazed in the heart of Tuscany, from three-generation-old workshop molds." } },
+        "s5": { "type": "step", "settings": { "icon": "proc-numerado", "title": "Firma", "text": "We embrace the uniqueness that only imperfection reveals — traces of the hand, moments of chance." } }
       },
-      "block_order": [
-        "s1",
-        "s2",
-        "s3",
-        "s4",
-        "s5"
-      ],
+      "block_order": ["s1", "s2", "s3", "s4", "s5"],
       "settings": {
-        "caption": "Atelier LUXOR, Barcelona. Torneado en húmedo de alabastro de Volterra.",
-        "eyebrow": "§ 05 · Método",
-        "title_line_1": "Del estrato",
-        "title_line_2": "a la firma."
+        "image_asset": "bojola-ceramic-1.webp",
+        "caption": "The ceramics workshop — archival molds, Tuscany"
+      }
+    },
+    "editorial": {
+      "type": "luxor-editorial",
+      "blocks": {
+        "n1983": { "type": "note", "settings": { "stamp": "1983", "title": "The origin", "text": "Studio Bojola is founded by Luca Bojola — a designer of ceramics, lighting and luxury objects, known for timeless pieces in semi-precious stones and spaces that transcended boundaries.", "image_asset": "bojola-about-2.webp" } },
+        "quote": { "type": "quote", "settings": { "text": "We embrace the kind of uniqueness that only imperfection can reveal — traces of the hand, moments of chance.", "author": "Margherita Bojola" } },
+        "n2020": { "type": "note", "settings": { "stamp": "2020", "title": "An independent voice", "text": "Margherita Bojola launches the Studio Bojola brand — created to enhance artisan craftsmanship and give shape to the studio's aesthetic vision without intermediaries.", "image_asset": "bojola-about-3.webp" } },
+        "ntoday": { "type": "note", "settings": { "stamp": "Oggi", "title": "The barn in the hills", "text": "From the former barn near Florence, each collection reinterprets the relationship between shape and material — knowledge rooted in tradition, constantly reaching toward innovation.", "image_asset": "bojola-about-1.webp" } },
+        "clients": { "type": "clients", "settings": { "title": "We have worked for", "names": "Badari Firenze, Baldi Home Jewels, Leica Akademie, Leica Camera Italia, Banci, Barj Buzzoni, Bertocci, Ceccarelli Ceramiche, Cristina Rubinetterie, Film Ferrania, Forma Aquae, Karol, Savio Firmino, Seguso, Tosco Ticciati" } }
+      },
+      "block_order": ["n1983", "quote", "n2020", "ntoday", "clients"],
+      "settings": {
+        "eyebrow": "§ 08 · Notes from the Atelier",
+        "title_line_1": "Notes from",
+        "title_line_2": "the atelier.",
+        "note": "Four decades of dialogue between materials and vision — the diary of the house, kept since 1983."
       }
     },
     "studio": {
       "type": "luxor-studio",
       "blocks": {
-        "elena": {
-          "type": "founder",
-          "settings": {
-            "name": "Elena Roig",
-            "role": "Directora de materia",
-            "bio": "Veinte años eligiendo bloques en Tivoli y Volterra. Dice que un buen travertino se reconoce por el sonido, no por el color."
-          }
-        },
-        "bruno": {
-          "type": "founder",
-          "settings": {
-            "name": "Bruno Casale",
-            "role": "Maestro de taller",
-            "bio": "Tercera generación de torneros. Aprendió el oficio con alabastro de desecho; hoy firma cada pieza que sale del atelier."
-          }
-        }
+        "margherita": { "type": "founder", "settings": { "name": "Margherita Bojola", "role": "Creative direction", "bio": "Her background in luxury fashion informs a thoughtful, eco-conscious approach to object design. In 2020 she gave the studio's vision its own independent voice." } },
+        "gilberto": { "type": "founder", "settings": { "name": "Gilberto Benni", "role": "Commercial lead", "bio": "Nearly twenty years of commerce and a long-standing collaboration with Leica Camera — the bridge between the atelier and the world." } }
       },
-      "block_order": [
-        "elena",
-        "bruno"
-      ],
+      "block_order": ["margherita", "gilberto"],
       "settings": {
-        "eyebrow": "§ 06 · El estudio",
-        "title_line_1": "Dos oficios,",
-        "title_line_2": "una casa.",
-        "note": "El atelier ocupa una antigua fundición en el Poblenou, Barcelona. Se visita con cita."
+        "image_asset": "bojola-about-1.webp",
+        "eyebrow": "§ 09 · The studio",
+        "title_line_1": "The hands",
+        "title_line_2": "behind the house.",
+        "note": "Founded in 1983 by Luca Bojola. Today the studio balances creative consultancy — bespoke objects, interiors, creative direction — with its own collections in crystal and ceramic."
       }
     },
     "cta": {
       "type": "luxor-cta",
       "settings": {
-        "eyebrow": "§ 07 · Encargos",
-        "title_line_1": "Encarga una pieza que ya existía",
-        "title_line_2": "hace cinco mil años.",
-        "cta_primary_label": "Configurar la tuya",
-        "cta_primary_link": "",
-        "cta_secondary_label": "atelier@luxor.casa",
-        "cta_secondary_link": ""
+        "eyebrow": "§ 10 · Visit",
+        "title_line_1": "Via Palazzuolo 135 R,",
+        "title_line_2": "Firenze.",
+        "cta_primary_label": "Plan your visit",
+        "cta_primary_link": "/pages/contact",
+        "cta_secondary_label": "Creative consultancy",
+        "cta_secondary_link": "/pages/projects"
       }
     }
   },
-  "order": [
-    "hero",
-    "manifesto",
-    "materials",
-    "lookbook",
-    "configurator",
-    "process",
-    "studio",
-    "cta"
-  ]
+  "order": ["hero", "manifesto", "materials", "featured", "lookbook", "configurator", "carousel", "bundle", "process", "editorial", "studio", "cta"]
 }

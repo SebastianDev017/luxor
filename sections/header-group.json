@@ -14,10 +14,9 @@
     "header": {
       "type": "luxor-header",
       "settings": {
-        "brand_text": "LUXOR",
-        "menu": "main-menu",
-        "cta_label": "Encargar",
-        "cta_link": ""
+        "brand_text": "Studio Bojola",
+        "cta_label": "Visit",
+        "cta_link": "/pages/contact"
       }
     }
   },

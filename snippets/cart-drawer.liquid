@@ -1,0 +1,40 @@
+{%- comment -%}
+  cart-drawer — cesta lateral AJAX de LUXOR.
+  Se renderiza una vez desde layout/theme.liquid. Los items se pintan
+  en cliente desde /cart.js (luxor-shop.js). Apertura: evento `luxor:cart:open`.
+{%- endcomment -%}
+<aside class="cdrawer" data-cart-drawer aria-hidden="true">
+  <div class="cdrawer__scrim" data-cart-close aria-hidden="true"></div>
+  <div class="cdrawer__panel" role="dialog" aria-modal="true" aria-label="{{ 'cart.drawer.title' | t }}" tabindex="-1">
+    <header class="cdrawer__head">
+      <p class="cdrawer__title">
+        {{ 'cart.drawer.title' | t }}
+        <span class="cdrawer__count" data-cart-count-label hidden></span>
+      </p>
+      <button class="cdrawer__close" type="button" data-cart-close aria-label="{{ 'accessibility.close' | t }}">
+        <svg viewBox="0 0 14 14" aria-hidden="true"><path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.2"/></svg>
+      </button>
+    </header>
+
+    <div class="cdrawer__status" data-cart-status role="status" aria-live="polite"></div>
+
+    <div class="cdrawer__items" data-cart-items></div>
+
+    <div class="cdrawer__empty" data-cart-empty hidden>
+      <p>{{ 'cart.drawer.empty' | t }}</p>
+      <a class="btn btn--ghost" href="{{ routes.all_products_collection_url }}"><span>{{ 'cart.drawer.continue' | t }}</span></a>
+    </div>
+
+    <footer class="cdrawer__foot" data-cart-foot hidden>
+      <div class="cdrawer__subtotal">
+        <span>{{ 'cart.drawer.subtotal' | t }}</span>
+        <span data-cart-subtotal>—</span>
+      </div>
+      <p class="cdrawer__fine">{{ 'cart.drawer.taxes_note' | t }}</p>
+      <div class="cdrawer__cta">
+        <a class="btn btn--ghost cdrawer__view" href="{{ routes.cart_url }}"><span>{{ 'cart.drawer.view_cart' | t }}</span></a>
+        <button class="btn btn--brass cdrawer__checkout" type="button" data-cart-checkout><span>{{ 'cart.drawer.checkout' | t }}</span></button>
+      </div>
+    </footer>
+  </div>
+</aside>

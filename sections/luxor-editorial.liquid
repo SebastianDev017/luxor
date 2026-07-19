@@ -1,0 +1,112 @@
+<section class="edito" data-section="edito" id="diario">
+  <header class="section-head section-head--split">
+    <div>
+      <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+      <h2 class="section-title">{{ section.settings.title_line_1 }}{% if section.settings.title_line_2 != blank %}<br><em>{{ section.settings.title_line_2 }}</em>{% endif %}</h2>
+    </div>
+    {%- if section.settings.note != blank -%}
+      <p class="section-note">{{ section.settings.note }}</p>
+    {%- endif -%}
+  </header>
+
+  <div class="edito__flow">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'note' -%}
+          <article class="edito__note{% cycle ' edito__note--left', ' edito__note--right' %}" {{ block.shopify_attributes }}>
+            <figure class="edito__media">
+              {%- if block.settings.image -%}
+                {{ block.settings.image | image_url: width: 1100 | image_tag: loading: 'lazy', alt: block.settings.title }}
+              {%- elsif block.settings.image_asset != blank -%}
+                <img src="{{ block.settings.image_asset | asset_url }}" alt="{{ block.settings.title | escape }}" loading="lazy" width="1100" height="820">
+              {%- endif -%}
+            </figure>
+            <div class="edito__body">
+              <p class="edito__stamp">{{ block.settings.stamp }}</p>
+              <h3 class="edito__title">{{ block.settings.title }}</h3>
+              <p class="edito__text">{{ block.settings.text }}</p>
+            </div>
+          </article>
+        {%- when 'quote' -%}
+          <blockquote class="edito__quote" {{ block.shopify_attributes }}>
+            <p>{{ block.settings.text }}</p>
+            {%- if block.settings.author != blank -%}
+              <cite>{{ block.settings.author }}</cite>
+            {%- endif -%}
+          </blockquote>
+        {%- when 'clients' -%}
+          <div class="edito__clients" {{ block.shopify_attributes }}>
+            {%- if block.settings.title != blank -%}
+              <p class="edito__clients-label">{{ block.settings.title }}</p>
+            {%- endif -%}
+            {%- assign names = block.settings.names | split: ',' -%}
+            <div class="edito__marquee" aria-hidden="true">
+              <div class="edito__marquee-track">
+                {%- for i in (1..2) -%}
+                  <span class="edito__marquee-run">
+                    {%- for name in names -%}
+                      <span class="edito__client">{{ name | strip }}</span><span class="edito__dot">·</span>
+                    {%- endfor -%}
+                  </span>
+                {%- endfor -%}
+              </div>
+            </div>
+            <p class="sr-only">{{ block.settings.names }}</p>
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Diario del atelier",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ Diario · Notas del atelier" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Notas" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "del atelier." },
+    { "type": "textarea", "id": "note", "label": "Nota lateral" }
+  ],
+  "blocks": [
+    {
+      "type": "note",
+      "name": "Nota (año)",
+      "settings": [
+        { "type": "text", "id": "stamp", "label": "Sello (año / fecha)", "default": "1983" },
+        { "type": "text", "id": "title", "label": "Título", "default": "El origen" },
+        { "type": "textarea", "id": "text", "label": "Texto", "default": "Una nota breve del diario de la casa." },
+        { "type": "image_picker", "id": "image", "label": "Imagen" },
+        { "type": "text", "id": "image_asset", "label": "Asset de imagen (avanzado)", "info": "Nombre de archivo en assets del tema. Solo si no hay imagen elegida." }
+      ]
+    },
+    {
+      "type": "quote",
+      "name": "Cita",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Cita", "default": "Abrazamos la unicidad que solo la imperfección revela." },
+        { "type": "text", "id": "author", "label": "Autora / autor" }
+      ]
+    },
+    {
+      "type": "clients",
+      "name": "Procedencia (clientes)",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Etiqueta", "default": "Hemos trabajado para" },
+        { "type": "textarea", "id": "names", "label": "Nombres (separados por coma)", "default": "Badari Firenze, Baldi Home Jewels, Leica Camera, Seguso, Savio Firmino" }
+      ]
+    }
+  ],
+  "max_blocks": 8,
+  "presets": [
+    {
+      "name": "Diario del atelier",
+      "blocks": [
+        { "type": "note", "settings": { "stamp": "1983", "title": "El origen", "text": "La casa nace de un oficio heredado y de la obsesión por la materia bien elegida." } },
+        { "type": "quote", "settings": { "text": "Abrazamos la unicidad que solo la imperfección revela: huellas de la mano, momentos de azar." } },
+        { "type": "note", "settings": { "stamp": "Hoy", "title": "El presente", "text": "Cada colección reinterpreta la relación entre forma y materia, con piezas que resisten el paso del tiempo." } },
+        { "type": "clients", "settings": {} }
+      ]
+    }
+  ]
+}
+{% endschema %}

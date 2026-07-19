@@ -278,7 +278,7 @@
         },
         1.2
       )
-      .fromTo(atelier, { opacity: 0, scale: 0.6, transformOrigin: '327px 193px' }, { opacity: 1, scale: 1, duration: 0.7, ease: 'back.out(2)' }, 1.5)
+      .fromTo(atelier, { opacity: 0, scale: 0.6, transformOrigin: '536.5px 111.3px' }, { opacity: 1, scale: 1, duration: 0.7, ease: 'back.out(2)' }, 1.5)
       .fromTo(nodes, { opacity: 0, scale: 0.5, transformOrigin: 'center' }, { opacity: 1, scale: 1, duration: 0.7, stagger: 0.1, ease: 'back.out(2)' }, 1.7)
       .fromTo(container.querySelector('.materials__panel'), { opacity: 0, x: 26 }, { opacity: 1, x: 0, duration: 0.9, ease: EASE }, 2)
       .fromTo(
@@ -375,6 +375,49 @@
       )
   }
 
+  function gridRevealInit(container) {
+    if (!MOTION) return
+    var cards = container.querySelectorAll('.pgrid > .pcard, .lcarousel__track > .pcard, .lbundle__item')
+    if (!cards.length || container.dataset.revealed) return
+    container.dataset.revealed = 'true'
+    gsap.fromTo(
+      cards,
+      { opacity: 0, y: 34 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 0.9,
+        stagger: 0.08,
+        ease: EASE,
+        clearProps: 'transform,opacity',
+        scrollTrigger: { trigger: container, start: 'top 80%', once: true },
+      }
+    )
+  }
+
+  function editoInit(container) {
+    if (!MOTION) return
+    container.querySelectorAll('.edito__note').forEach(function (note) {
+      if (note.dataset.revealed) return
+      note.dataset.revealed = 'true'
+      var media = note.querySelector('.edito__media')
+      var body = note.querySelectorAll('.edito__body > *')
+      var tl = gsap.timeline({ scrollTrigger: { trigger: note, start: 'top 82%', once: true } })
+      if (media)
+        tl.fromTo(media, { clipPath: 'inset(0 0 100% 0)' }, { clipPath: 'inset(0 0 0% 0)', duration: 1.1, ease: 'expo.inOut' })
+      tl.fromTo(body, { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.8, stagger: 0.09, ease: EASE }, media ? 0.35 : 0)
+    })
+    var quote = container.querySelector('.edito__quote')
+    if (quote && !quote.dataset.revealed) {
+      quote.dataset.revealed = 'true'
+      gsap.fromTo(
+        quote.children,
+        { opacity: 0, y: 26 },
+        { opacity: 1, y: 0, duration: 1, stagger: 0.15, ease: EASE, scrollTrigger: { trigger: quote, start: 'top 78%', once: true } }
+      )
+    }
+  }
+
   var INITS = {
     hero: [heroInit],
     manifesto: [manifestoInit],
@@ -384,6 +427,10 @@
     process: [processInit],
     studio: [studioInit],
     cta: [ctaInit],
+    edito: [editoInit],
+    fprods: [gridRevealInit],
+    pcarousel: [gridRevealInit],
+    lbundle: [gridRevealInit],
   }
 
   function initSection(container) {

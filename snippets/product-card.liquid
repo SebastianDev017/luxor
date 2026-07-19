@@ -1,83 +1,12 @@
 {%- comment -%}
-  product-card — card reutilizable de producto LUXOR.
+  product-card — card de producto LUXOR v2.
   Uso: {% render 'product-card', product: product, num: forloop.index %}
   - product: objeto product (obligatorio)
   - num: entero opcional para la numeración editorial N.0X
+  - show_badges / show_variants / show_actions: booleanos opcionales (default true)
+  - new_days: días que un producto cuenta como «nuevo» (default 45)
+  Estilos en luxor.css (bloque «commerce»). Lógica en luxor-shop.js.
 {%- endcomment -%}
-<style>
-  .pcard {
-    display: block;
-  }
-  .pcard-media {
-    position: relative;
-    display: block;
-    aspect-ratio: 3 / 4;
-    overflow: clip;
-    background: var(--bone-deep);
-  }
-  .pcard-media img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: scale(1.001);
-    transition: transform 1.3s var(--ease-lux);
-  }
-  .pcard:hover .pcard-media img {
-    transform: scale(1.018);
-  }
-  .pcard-media svg {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    color: var(--stone);
-  }
-  .pcard-veil {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, color-mix(in srgb, var(--ink) 55%, transparent), transparent 50%);
-    opacity: 0;
-    transition: opacity 0.6s var(--ease-lux);
-  }
-  .pcard:hover .pcard-veil,
-  .pcard:focus-visible .pcard-veil {
-    opacity: 1;
-  }
-  .pcard-frame {
-    position: absolute;
-    inset: 0;
-    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
-    pointer-events: none;
-    transition: inset 0.7s var(--ease-lux), border-color 0.7s var(--ease-lux);
-  }
-  .pcard:hover .pcard-frame,
-  .pcard:focus-visible .pcard-frame {
-    inset: 10px;
-    border-color: color-mix(in srgb, var(--brass-bright) 65%, transparent);
-  }
-  .pcard-body {
-    display: grid;
-    gap: 0.3rem;
-    padding-top: 1rem;
-  }
-  .pcard-num {
-    font-family: var(--font-mono);
-    font-size: 0.66rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: var(--brass-dark);
-  }
-  .pcard-title {
-    font-family: var(--font-display);
-    font-size: 1.35rem;
-    font-weight: 420;
-    line-height: 1.15;
-  }
-  .pcard-price {
-    font-size: 0.85rem;
-    color: var(--text-muted);
-  }
-</style>
 {%- liquid
   assign pcard_num = ''
   if num != blank
@@ -85,18 +14,109 @@
   endif
   assign pcard_kind = product.type | default: product.vendor
   assign pcard_alt = product.featured_image.alt | default: product.title
+
+  assign show_badges = show_badges | default: true, allow_false: true
+  assign show_variants = show_variants | default: true, allow_false: true
+  assign show_actions = show_actions | default: true, allow_false: true
+  assign new_days = new_days | default: 45
+
+  assign current = product.selected_or_first_available_variant | default: product.variants.first
+  assign on_sale = false
+  if current.compare_at_price > current.price
+    assign on_sale = true
+  endif
+
+  assign is_new = false
+  assign now_s = 'now' | date: '%s' | plus: 0
+  assign created_s = product.created_at | date: '%s' | plus: 0
+  assign age_days = now_s | minus: created_s | divided_by: 86400
+  if age_days <= new_days
+    assign is_new = true
+  endif
+  if product.tags contains 'new' or product.tags contains 'nuevo'
+    assign is_new = true
+  endif
+
+  assign is_hot = false
+  if product.tags contains 'hot' or product.tags contains 'bestseller'
+    assign is_hot = true
+  endif
+
+  assign second_image = product.images[1]
+
+  comment
+    Índice de la opción de color (swatches con imagen de variante); resto de opciones → select.
+  endcomment
+  assign color_index = -1
+  for option in product.options_with_values
+    assign oname = option.name | downcase
+    if oname == 'color' or oname == 'colour' or oname == 'colore' or oname == 'material' or oname == 'materia'
+      assign color_index = forloop.index0
+      break
+    endif
+  endfor
+
+  assign has_real_options = false
+  if product.variants.size > 1
+    assign has_real_options = true
+  endif
 -%}
-<a class="pcard" href="{{ product.url }}">
-  <span class="pcard-media">
-    {%- if product.featured_image -%}
-      {{ product.featured_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(max-width: 960px) 50vw, 25vw', alt: pcard_alt }}
-    {%- else -%}
-      {{ 'product-2' | placeholder_svg_tag }}
+<article class="pcard" data-pcard data-handle="{{ product.handle }}">
+  <script type="application/json" data-pcard-data>
+    {
+      "url": {{ product.url | json }},
+      "colorIndex": {{ color_index }},
+      "options": {{ product.options | json }},
+      "variants": [
+        {%- for v in product.variants -%}
+          {
+            "id": {{ v.id }},
+            "price": {{ v.price | json }},
+            "compare": {{ v.compare_at_price | default: 0 | json }},
+            "available": {{ v.available }},
+            "opts": [{{ v.option1 | json }}{% if v.option2 %}, {{ v.option2 | json }}{% endif %}{% if v.option3 %}, {{ v.option3 | json }}{% endif %}],
+            "img": {% if v.featured_image %}{{ v.featured_image | image_url: width: 720 | json }}{% else %}null{% endif %}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+
+  <div class="pcard-media">
+    <a class="pcard-media-link" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_image -%}
+        {{ product.featured_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(max-width: 960px) 50vw, 25vw', alt: pcard_alt, class: 'pcard-img pcard-img--main' }}
+        {%- if second_image -%}
+          {{ second_image | image_url: width: 720 | image_tag: loading: 'lazy', widths: '360, 540, 720', sizes: '(max-width: 960px) 50vw, 25vw', alt: '', class: 'pcard-img pcard-img--alt' }}
+        {%- endif -%}
+      {%- else -%}
+        {{ 'product-2' | placeholder_svg_tag }}
+      {%- endif -%}
+      <span class="pcard-veil" aria-hidden="true"></span>
+      <span class="pcard-frame" aria-hidden="true"></span>
+    </a>
+
+    {%- if show_badges -%}
+      <span class="pcard-badges" aria-hidden="false">
+        {%- if on_sale -%}<span class="pcard-badge pcard-badge--sale" data-pcard-badge-sale>{{ 'products.card.sale' | t }}</span>{%- endif -%}
+        {%- if is_hot -%}<span class="pcard-badge pcard-badge--hot">{{ 'products.card.hot' | t }}</span>{%- endif -%}
+        {%- if is_new and is_hot == false -%}<span class="pcard-badge pcard-badge--new">{{ 'products.card.new' | t }}</span>{%- endif -%}
+        {%- unless product.available -%}<span class="pcard-badge pcard-badge--soldout">{{ 'products.card.sold_out' | t }}</span>{%- endunless -%}
+      </span>
     {%- endif -%}
-    <span class="pcard-veil" aria-hidden="true"></span>
-    <span class="pcard-frame" aria-hidden="true"></span>
-  </span>
-  <span class="pcard-body">
+
+    <button class="pcard-plus" type="button" data-pcard-quickview aria-haspopup="dialog" aria-label="{{ 'products.card.quick_view' | t: title: product.title }}">
+      <svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.1"/></svg>
+    </button>
+
+    {%- if show_actions and product.available -%}
+      <button class="pcard-quickadd" type="button" data-pcard-quickadd>
+        <span data-pcard-quickadd-label>{{ 'products.card.quick_add' | t }}</span>
+      </button>
+    {%- endif -%}
+  </div>
+
+  <div class="pcard-body">
     {%- if pcard_num != '' or pcard_kind != blank -%}
       <span class="pcard-num">
         {%- if pcard_num != '' -%}N.{{ pcard_num }}{%- endif -%}
@@ -104,7 +124,88 @@
         {%- if pcard_kind != blank -%}{{ pcard_kind | escape }}{%- endif -%}
       </span>
     {%- endif -%}
-    <span class="pcard-title">{{ product.title | escape }}</span>
-    <span class="pcard-price">{{ 'sections.product.from_price' | t }} {{ product.price_min | money }}</span>
-  </span>
-</a>
+    <a class="pcard-title-link" href="{{ product.url }}"><span class="pcard-title">{{ product.title | escape }}</span></a>
+    <span class="pcard-price" data-pcard-price>
+      <span class="pcard-price-current{% if on_sale %} is-sale{% endif %}" data-pcard-price-current>{{ current.price | money }}</span>
+      <s class="pcard-price-compare" data-pcard-price-compare {% unless on_sale %}hidden{% endunless %}>
+        {%- if on_sale %}{{ current.compare_at_price | money }}{% endif -%}
+      </s>
+    </span>
+
+    {%- if show_variants and has_real_options -%}
+      <div class="pcard-variants">
+        {%- for option in product.options_with_values -%}
+          {%- if forloop.index0 == color_index -%}
+            {%- assign swatch_ok = true -%}
+            {%- for value in option.values -%}
+              {%- assign found_img = false -%}
+              {%- for v in product.variants -%}
+                {%- if v.options[color_index] == value and v.featured_image -%}
+                  {%- assign found_img = true -%}
+                  {%- break -%}
+                {%- endif -%}
+              {%- endfor -%}
+              {%- unless found_img -%}
+                {%- assign swatch_ok = false -%}
+                {%- break -%}
+              {%- endunless -%}
+            {%- endfor -%}
+            {%- if swatch_ok -%}
+              <div class="pcard-swatches" role="radiogroup" aria-label="{{ option.name | escape }}" data-pcard-option-index="{{ forloop.index0 }}">
+                {%- for value in option.values -%}
+                  {%- assign sw_img = blank -%}
+                  {%- for v in product.variants -%}
+                    {%- if v.options[color_index] == value and v.featured_image -%}
+                      {%- assign sw_img = v.featured_image -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  <button
+                    class="pcard-swatch"
+                    type="button"
+                    role="radio"
+                    aria-checked="{% if current.options[color_index] == value %}true{% else %}false{% endif %}"
+                    data-pcard-swatch
+                    data-value="{{ value | escape }}"
+                    title="{{ value | escape }}"
+                  >
+                    <img src="{{ sw_img | image_url: width: 72 }}" alt="{{ value | escape }}" loading="lazy" width="36" height="48">
+                  </button>
+                {%- endfor -%}
+              </div>
+            {%- else -%}
+              <label class="pcard-select">
+                <span class="sr-only">{{ option.name | escape }}</span>
+                <select data-pcard-option-index="{{ forloop.index0 }}" data-pcard-select aria-label="{{ option.name | escape }}">
+                  {%- for value in option.values -%}
+                    <option value="{{ value | escape }}" {% if current.options[forloop.parentloop.index0] == value %}selected{% endif %}>{{ value | escape }}</option>
+                  {%- endfor -%}
+                </select>
+              </label>
+            {%- endif -%}
+          {%- else -%}
+            <label class="pcard-select">
+              <span class="sr-only">{{ option.name | escape }}</span>
+              <select data-pcard-option-index="{{ forloop.index0 }}" data-pcard-select aria-label="{{ option.name | escape }}">
+                {%- for value in option.values -%}
+                  <option value="{{ value | escape }}" {% if current.options[forloop.parentloop.index0] == value %}selected{% endif %}>{{ value | escape }}</option>
+                {%- endfor -%}
+              </select>
+            </label>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+
+    {%- if show_actions -%}
+      <div class="pcard-actions">
+        {%- if product.available -%}
+          <button class="pcard-btn pcard-btn--atc" type="button" data-pcard-atc>{{ 'products.card.add_to_cart' | t }}</button>
+          <button class="pcard-btn pcard-btn--buy" type="button" data-pcard-buy>{{ 'products.card.buy_now' | t }}</button>
+        {%- else -%}
+          <span class="pcard-btn is-disabled" aria-disabled="true">{{ 'products.card.sold_out' | t }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </div>
+</article>

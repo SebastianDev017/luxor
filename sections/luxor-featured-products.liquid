@@ -1,0 +1,75 @@
+{%- liquid
+  assign products_source = section.settings.product_list
+  if products_source == blank or products_source.count == 0
+    assign products_source = section.settings.collection.products
+  endif
+  assign limit = section.settings.count
+-%}
+<section class="fprods" data-section="fprods" id="piezas-{{ section.id | slice: -6, 6 }}">
+  <header class="section-head">
+    <p class="eyebrow">{{ section.settings.eyebrow }}</p>
+    <h2 class="section-title">{{ section.settings.title_line_1 }}{% if section.settings.title_line_2 != blank %}<br><em>{{ section.settings.title_line_2 }}</em>{% endif %}</h2>
+    {%- if section.settings.intro != blank -%}
+      <p class="section-intro">{{ section.settings.intro }}</p>
+    {%- endif -%}
+  </header>
+
+  <div class="pgrid" style="--cols: {{ section.settings.columns }};">
+    {%- if products_source != blank and products_source.count > 0 -%}
+      {%- for product in products_source limit: limit -%}
+        {% render 'product-card',
+          product: product,
+          num: forloop.index,
+          show_badges: section.settings.show_badges,
+          show_variants: section.settings.show_variants,
+          show_actions: section.settings.show_actions,
+          new_days: section.settings.new_days
+        %}
+      {%- endfor -%}
+    {%- else -%}
+      {%- for i in (1..4) -%}
+        <article class="pcard">
+          <div class="pcard-media">{{ 'product-' | append: i | placeholder_svg_tag }}</div>
+          <div class="pcard-body">
+            <span class="pcard-num">N.0{{ i }}</span>
+            <span class="pcard-title">{{ 'onboarding.product_title' | t }}</span>
+            <span class="pcard-price">{{ 9900 | money }}</span>
+          </div>
+        </article>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.link_label != blank -%}
+    <div class="fprods__more">
+      <a class="btn btn--ghost" href="{{ section.settings.link_url | default: routes.all_products_collection_url }}"><span>{{ section.settings.link_label }}</span></a>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Piezas destacadas",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "§ Selección · La casa" },
+    { "type": "text", "id": "title_line_1", "label": "Título línea 1", "default": "Piezas" },
+    { "type": "text", "id": "title_line_2", "label": "Título línea 2 (itálica)", "default": "destacadas." },
+    { "type": "textarea", "id": "intro", "label": "Introducción" },
+    { "type": "collection", "id": "collection", "label": "Colección" },
+    { "type": "product_list", "id": "product_list", "label": "Productos concretos", "info": "Si eliges productos aquí, tienen prioridad sobre la colección." },
+    { "type": "range", "id": "count", "label": "Máximo de piezas", "min": 2, "max": 12, "step": 1, "default": 4 },
+    { "type": "range", "id": "columns", "label": "Columnas (escritorio)", "min": 2, "max": 4, "step": 1, "default": 4 },
+    { "type": "header", "content": "Card de producto" },
+    { "type": "checkbox", "id": "show_badges", "label": "Mostrar badges (oferta / nuevo / hot)", "default": true },
+    { "type": "checkbox", "id": "show_variants", "label": "Mostrar selector de variantes", "default": true },
+    { "type": "checkbox", "id": "show_actions", "label": "Mostrar botones de compra", "default": true },
+    { "type": "range", "id": "new_days", "label": "Días que una pieza cuenta como «nueva»", "min": 7, "max": 120, "step": 1, "default": 45 },
+    { "type": "header", "content": "Enlace inferior" },
+    { "type": "text", "id": "link_label", "label": "Texto del enlace" },
+    { "type": "url", "id": "link_url", "label": "URL del enlace" }
+  ],
+  "presets": [
+    { "name": "Piezas destacadas" }
+  ]
+}
+{% endschema %}
