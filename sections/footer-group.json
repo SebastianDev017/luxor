@@ -14,8 +14,8 @@
     "footer": {
       "type": "luxor-footer",
       "settings": {
-        "show_wordmark": false,
-        "wordmark": "LUXOR",
+        "show_wordmark": true,
+        "wordmark": "Bojola",
         "brand_lines": "<p>LUXOR — Casa de Objetos<br/>Poblenou, Barcelona</p>",
         "menu": "",
         "legal": "<p>MMXXVI · Piezas numeradas, hechas a pedido.<br/>La materia recuerda.</p>"
