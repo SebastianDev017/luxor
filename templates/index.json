@@ -1,80 +1,382 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "luxor-hero",
-      "settings": {}
+      "settings": {
+        "eyebrow_left": "Casa de Objetos",
+        "eyebrow_right": "Col. I — Origen",
+        "title_line_1": "La materia",
+        "title_line_2": "recuerda.",
+        "subtitle": "Travertino, alabastro, latón y cedro. Cinco milenios de memoria, tallados en forma presente.",
+        "cta_primary_label": "Configurar la Ánfora N.01",
+        "cta_primary_link": "",
+        "cta_secondary_label": "Ver la colección",
+        "cta_secondary_link": "",
+        "scroll_hint": "La historia empieza en la cantera"
+      }
     },
     "manifesto": {
       "type": "luxor-manifesto",
       "blocks": {
-        "line1": { "type": "line", "settings": { "text": "LUXOR trabaja cuatro materias con cinco milenios de memoria." } },
-        "line2": { "type": "line", "settings": { "text": "Cada pieza nace de oficios heredados: canteros, torneros, fundidores." } },
-        "line3": { "type": "line", "settings": { "text": "Objetos numerados, hechos a pedido, pensados para durar más que su dueño." } }
+        "line1": {
+          "type": "line",
+          "settings": {
+            "text": "LUXOR trabaja cuatro materias con cinco milenios de memoria."
+          }
+        },
+        "line2": {
+          "type": "line",
+          "settings": {
+            "text": "Cada pieza nace de oficios heredados: canteros, torneros, fundidores."
+          }
+        },
+        "line3": {
+          "type": "line",
+          "settings": {
+            "text": "Objetos numerados, hechos a pedido, pensados para durar más que su dueño."
+          }
+        }
       },
-      "block_order": ["line1", "line2", "line3"],
-      "settings": {}
+      "block_order": [
+        "line1",
+        "line2",
+        "line3"
+      ],
+      "settings": {
+        "index_label": "§ 01"
+      }
     },
     "materials": {
       "type": "luxor-materials",
       "blocks": {
-        "travertino": { "type": "material", "settings": { "map_node": "travertino", "icon": "mat-travertino", "name": "Travertino", "origin": "Tivoli, Lacio", "age": "80.000 años", "memory": "Sedimento de aguas termales depositado capa a capa desde el Pleistoceno. Con esta piedra se levantó el Coliseo; sus poros son burbujas de un manantial extinto.", "craft": "Cantería y corte a hilo diamantado" } },
-        "alabastro": { "type": "material", "settings": { "map_node": "alabastro", "icon": "mat-alabastro", "name": "Alabastro", "origin": "Volterra, Toscana", "age": "5.000 años de oficio", "memory": "La piedra de los vasos canopos y de las ventanas que iluminaban templos antes del vidrio. Es la única materia de la casa que deja pasar la luz.", "craft": "Torneado en húmedo y pulido al agua" } },
-        "laton": { "type": "material", "settings": { "map_node": "laton", "icon": "mat-laton", "name": "Latón", "origin": "Anatolia y el Levante", "age": "Edad del Bronce", "memory": "La primera aleación deliberada del ser humano: cobre y zinc fundidos hasta dar un oro que se puede trabajar. Envejece hacia el bronce, nunca hacia el óxido.", "craft": "Fundición a la cera perdida y cincelado" } },
-        "cedro": { "type": "material", "settings": { "map_node": "cedro", "icon": "mat-cedro", "name": "Cedro", "origin": "Cordillera del Atlas", "age": "4.600 años navegando", "memory": "La madera de las barcas solares de Keops, enterradas junto a la Gran Pirámide y aún intactas. Su resina perfuma siglos y repele el tiempo.", "craft": "Ebanistería de vaciado y aceitado natural" } }
+        "travertino": {
+          "type": "material",
+          "settings": {
+            "map_node": "travertino",
+            "icon": "mat-travertino",
+            "name": "Travertino",
+            "origin": "Tivoli, Lacio",
+            "age": "80.000 años",
+            "memory": "Sedimento de aguas termales depositado capa a capa desde el Pleistoceno. Con esta piedra se levantó el Coliseo; sus poros son burbujas de un manantial extinto.",
+            "craft": "Cantería y corte a hilo diamantado"
+          }
+        },
+        "alabastro": {
+          "type": "material",
+          "settings": {
+            "map_node": "alabastro",
+            "icon": "mat-alabastro",
+            "name": "Alabastro",
+            "origin": "Volterra, Toscana",
+            "age": "5.000 años de oficio",
+            "memory": "La piedra de los vasos canopos y de las ventanas que iluminaban templos antes del vidrio. Es la única materia de la casa que deja pasar la luz.",
+            "craft": "Torneado en húmedo y pulido al agua"
+          }
+        },
+        "laton": {
+          "type": "material",
+          "settings": {
+            "map_node": "laton",
+            "icon": "mat-laton",
+            "name": "Latón",
+            "origin": "Anatolia y el Levante",
+            "age": "Edad del Bronce",
+            "memory": "La primera aleación deliberada del ser humano: cobre y zinc fundidos hasta dar un oro que se puede trabajar. Envejece hacia el bronce, nunca hacia el óxido.",
+            "craft": "Fundición a la cera perdida y cincelado"
+          }
+        },
+        "cedro": {
+          "type": "material",
+          "settings": {
+            "map_node": "cedro",
+            "icon": "mat-cedro",
+            "name": "Cedro",
+            "origin": "Cordillera del Atlas",
+            "age": "4.600 años navegando",
+            "memory": "La madera de las barcas solares de Keops, enterradas junto a la Gran Pirámide y aún intactas. Su resina perfuma siglos y repele el tiempo.",
+            "craft": "Ebanistería de vaciado y aceitado natural"
+          }
+        }
       },
-      "block_order": ["travertino", "alabastro", "laton", "cedro"],
-      "settings": {}
+      "block_order": [
+        "travertino",
+        "alabastro",
+        "laton",
+        "cedro"
+      ],
+      "settings": {
+        "eyebrow": "§ 02 · Carta de materias",
+        "title_line_1": "Cuatro orígenes,",
+        "title_line_2": "un atelier."
+      }
     },
     "lookbook": {
       "type": "luxor-lookbook",
       "blocks": {
-        "anfora": { "type": "piece", "settings": { "slot": "anfora", "num": "N.01", "title": "Ánfora", "type": "Lámpara escultórica", "material": "Alabastro", "price": "desde 1.400 €" } },
-        "estela": { "type": "piece", "settings": { "slot": "estela", "num": "N.02", "title": "Estela", "type": "Consola de pared", "material": "Travertino", "price": "desde 3.200 €" } },
-        "canopo": { "type": "piece", "settings": { "slot": "canopo", "num": "N.03", "title": "Canopo", "type": "Vaso contenedor", "material": "Alabastro", "price": "desde 980 €" } },
-        "obelisco": { "type": "piece", "settings": { "slot": "obelisco", "num": "N.04", "title": "Obelisco", "type": "Candelabro", "material": "Latón", "price": "desde 640 €" } },
-        "dintel": { "type": "piece", "settings": { "slot": "dintel", "num": "N.05", "title": "Dintel", "type": "Centro de mesa", "material": "Travertino", "price": "desde 1.150 €" } },
-        "monolito": { "type": "piece", "settings": { "slot": "monolito", "num": "N.06", "title": "Monolito", "type": "Objeto de escritorio", "material": "Cedro", "price": "desde 420 €" } }
+        "anfora": {
+          "type": "piece",
+          "settings": {
+            "slot": "anfora",
+            "num": "N.01",
+            "title": "Ánfora",
+            "type": "Lámpara escultórica",
+            "material": "Alabastro",
+            "price": "desde 1.400 €",
+            "link": ""
+          }
+        },
+        "estela": {
+          "type": "piece",
+          "settings": {
+            "slot": "estela",
+            "num": "N.02",
+            "title": "Estela",
+            "type": "Consola de pared",
+            "material": "Travertino",
+            "price": "desde 3.200 €",
+            "link": ""
+          }
+        },
+        "canopo": {
+          "type": "piece",
+          "settings": {
+            "slot": "canopo",
+            "num": "N.03",
+            "title": "Canopo",
+            "type": "Vaso contenedor",
+            "material": "Alabastro",
+            "price": "desde 980 €",
+            "link": ""
+          }
+        },
+        "obelisco": {
+          "type": "piece",
+          "settings": {
+            "slot": "obelisco",
+            "num": "N.04",
+            "title": "Obelisco",
+            "type": "Candelabro",
+            "material": "Latón",
+            "price": "desde 640 €",
+            "link": ""
+          }
+        },
+        "dintel": {
+          "type": "piece",
+          "settings": {
+            "slot": "dintel",
+            "num": "N.05",
+            "title": "Dintel",
+            "type": "Centro de mesa",
+            "material": "Travertino",
+            "price": "desde 1.150 €",
+            "link": ""
+          }
+        },
+        "monolito": {
+          "type": "piece",
+          "settings": {
+            "slot": "monolito",
+            "num": "N.06",
+            "title": "Monolito",
+            "type": "Objeto de escritorio",
+            "material": "Cedro",
+            "price": "desde 420 €",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["anfora", "estela", "canopo", "obelisco", "dintel", "monolito"],
-      "settings": {}
+      "block_order": [
+        "anfora",
+        "estela",
+        "canopo",
+        "obelisco",
+        "dintel",
+        "monolito"
+      ],
+      "settings": {
+        "eyebrow": "§ 03 · Colección I — Origen",
+        "title_line_1": "Seis piezas",
+        "title_line_2": "numeradas.",
+        "note": "Cada pieza se produce a pedido y lleva su número tallado en la base. Ninguna serie supera las cuarenta y nueve unidades.",
+        "collection": ""
+      }
     },
     "configurator": {
       "type": "luxor-configurator",
       "blocks": {
-        "travertino": { "type": "material", "settings": { "name": "Travertino", "tex_key": "travertino", "base_price": 1900 } },
-        "alabastro": { "type": "material", "settings": { "name": "Alabastro", "tex_key": "alabastro", "base_price": 2600 } },
-        "laton": { "type": "material", "settings": { "name": "Latón", "tex_key": "laton", "base_price": 2400 } },
-        "cedro": { "type": "material", "settings": { "name": "Cedro", "tex_key": "cedro", "base_price": 1400 } }
+        "travertino": {
+          "type": "material",
+          "settings": {
+            "name": "Travertino",
+            "tex_key": "travertino",
+            "base_price": 1900
+          }
+        },
+        "alabastro": {
+          "type": "material",
+          "settings": {
+            "name": "Alabastro",
+            "tex_key": "alabastro",
+            "base_price": 2600
+          }
+        },
+        "laton": {
+          "type": "material",
+          "settings": {
+            "name": "Latón",
+            "tex_key": "laton",
+            "base_price": 2400
+          }
+        },
+        "cedro": {
+          "type": "material",
+          "settings": {
+            "name": "Cedro",
+            "tex_key": "cedro",
+            "base_price": 1400
+          }
+        }
       },
-      "block_order": ["travertino", "alabastro", "laton", "cedro"],
-      "settings": {}
+      "block_order": [
+        "travertino",
+        "alabastro",
+        "laton",
+        "cedro"
+      ],
+      "settings": {
+        "product": "",
+        "eyebrow": "§ 04 · Configurador",
+        "title_line_1": "La Ánfora N.01,",
+        "title_line_2": "en tu materia.",
+        "lead_default": "Entrega en 12 semanas",
+        "lead_large": "Entrega en 16 semanas",
+        "buy_label": "Encargar esta pieza",
+        "fine_print": "Depósito del 30% al encargar. Cada pieza se numera y firma en el atelier de Barcelona.",
+        "fallback_alt": "Ánfora N.01 en alabastro, encendida",
+        "demo_finishes": "Mate,Pulido",
+        "demo_sizes": "Sobremesa · 28 cm|Media · 42 cm|Suelo · 60 cm"
+      }
     },
     "process": {
       "type": "luxor-process",
       "blocks": {
-        "s1": { "type": "step", "settings": { "icon": "proc-cantera", "title": "Extracción", "text": "El bloque se elige a pie de cantera, leyendo la veta antes de cortar." } },
-        "s2": { "type": "step", "settings": { "icon": "proc-torno", "title": "Torneado", "text": "La forma nace en el torno, en húmedo, sin moldes ni copias." } },
-        "s3": { "type": "step", "settings": { "icon": "proc-pulido", "title": "Pulido", "text": "Al agua y a mano, hasta que la materia decide su brillo justo." } },
-        "s4": { "type": "step", "settings": { "icon": "proc-ensamblaje", "title": "Ensamblaje", "text": "Latón torneado, cableado textil y cedro aceitado, unidos sin adhesivos vistos." } },
-        "s5": { "type": "step", "settings": { "icon": "proc-numerado", "title": "Numerado", "text": "Cada pieza se talla con su número de serie y entra en el registro de la casa." } }
+        "s1": {
+          "type": "step",
+          "settings": {
+            "icon": "proc-cantera",
+            "title": "Extracción",
+            "text": "El bloque se elige a pie de cantera, leyendo la veta antes de cortar."
+          }
+        },
+        "s2": {
+          "type": "step",
+          "settings": {
+            "icon": "proc-torno",
+            "title": "Torneado",
+            "text": "La forma nace en el torno, en húmedo, sin moldes ni copias."
+          }
+        },
+        "s3": {
+          "type": "step",
+          "settings": {
+            "icon": "proc-pulido",
+            "title": "Pulido",
+            "text": "Al agua y a mano, hasta que la materia decide su brillo justo."
+          }
+        },
+        "s4": {
+          "type": "step",
+          "settings": {
+            "icon": "proc-ensamblaje",
+            "title": "Ensamblaje",
+            "text": "Latón torneado, cableado textil y cedro aceitado, unidos sin adhesivos vistos."
+          }
+        },
+        "s5": {
+          "type": "step",
+          "settings": {
+            "icon": "proc-numerado",
+            "title": "Numerado",
+            "text": "Cada pieza se talla con su número de serie y entra en el registro de la casa."
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3", "s4", "s5"],
-      "settings": {}
+      "block_order": [
+        "s1",
+        "s2",
+        "s3",
+        "s4",
+        "s5"
+      ],
+      "settings": {
+        "caption": "Atelier LUXOR, Barcelona. Torneado en húmedo de alabastro de Volterra.",
+        "eyebrow": "§ 05 · Método",
+        "title_line_1": "Del estrato",
+        "title_line_2": "a la firma."
+      }
     },
     "studio": {
       "type": "luxor-studio",
       "blocks": {
-        "elena": { "type": "founder", "settings": { "name": "Elena Roig", "role": "Directora de materia", "bio": "Veinte años eligiendo bloques en Tivoli y Volterra. Dice que un buen travertino se reconoce por el sonido, no por el color." } },
-        "bruno": { "type": "founder", "settings": { "name": "Bruno Casale", "role": "Maestro de taller", "bio": "Tercera generación de torneros. Aprendió el oficio con alabastro de desecho; hoy firma cada pieza que sale del atelier." } }
+        "elena": {
+          "type": "founder",
+          "settings": {
+            "name": "Elena Roig",
+            "role": "Directora de materia",
+            "bio": "Veinte años eligiendo bloques en Tivoli y Volterra. Dice que un buen travertino se reconoce por el sonido, no por el color."
+          }
+        },
+        "bruno": {
+          "type": "founder",
+          "settings": {
+            "name": "Bruno Casale",
+            "role": "Maestro de taller",
+            "bio": "Tercera generación de torneros. Aprendió el oficio con alabastro de desecho; hoy firma cada pieza que sale del atelier."
+          }
+        }
       },
-      "block_order": ["elena", "bruno"],
-      "settings": {}
+      "block_order": [
+        "elena",
+        "bruno"
+      ],
+      "settings": {
+        "eyebrow": "§ 06 · El estudio",
+        "title_line_1": "Dos oficios,",
+        "title_line_2": "una casa.",
+        "note": "El atelier ocupa una antigua fundición en el Poblenou, Barcelona. Se visita con cita."
+      }
     },
     "cta": {
       "type": "luxor-cta",
-      "settings": {}
+      "settings": {
+        "eyebrow": "§ 07 · Encargos",
+        "title_line_1": "Encarga una pieza que ya existía",
+        "title_line_2": "hace cinco mil años.",
+        "cta_primary_label": "Configurar la tuya",
+        "cta_primary_link": "",
+        "cta_secondary_label": "atelier@luxor.casa",
+        "cta_secondary_link": ""
+      }
     }
   },
-  "order": ["hero", "manifesto", "materials", "lookbook", "configurator", "process", "studio", "cta"]
+  "order": [
+    "hero",
+    "manifesto",
+    "materials",
+    "lookbook",
+    "configurator",
+    "process",
+    "studio",
+    "cta"
+  ]
 }
-
