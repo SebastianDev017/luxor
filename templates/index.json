@@ -297,6 +297,7 @@
     },
     "carousel": {
       "type": "luxor-product-carousel",
+      "disabled": true,
       "settings": {
         "eyebrow": "§ 06 · The Cristallo Barware",
         "title_line_1": "Objects that translate",
@@ -343,6 +344,7 @@
         "b2",
         "b3"
       ],
+      "disabled": true,
       "settings": {
         "eyebrow": "§ 07 · The bar ritual",
         "title_line_1": "Compose",
